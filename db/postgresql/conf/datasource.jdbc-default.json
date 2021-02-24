@@ -1,0 +1,14 @@
+{
+    "driverClass" : "org.postgresql.Driver",
+    "jdbcUrl" : "jdbc:postgresql://localhost:5432/openidm",
+    "databaseName" : "openidm",
+    "username" : "openidm",
+    "password" : "openidm",
+    "connectionTimeout" : 30000,
+    "connectionPool" : {
+        "type" : "bonecp",
+        "partitionCount" : 4,
+        "maxConnectionsPerPartition" : 25,
+        "minConnectionsPerPartition" : 5
+    }
+}

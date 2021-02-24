@@ -1,0 +1,14 @@
+{
+    "driverClass" : "org.h2.Driver",
+    "jdbcUrl" : "jdbc:h2:&{launcher.working.location}/db/openidm;MODE=MySQL;MVCC=FALSE",
+    "databaseName" : "openidm",
+    "username" : "sa",
+    "password" : "",
+    "connectionTimeout" : 30000,
+    "connectionPool" : {
+        "type" : "bonecp",
+        "partitionCount" : 4,
+        "maxConnectionsPerPartition" : 25,
+        "minConnectionsPerPartition" : 5
+    }
+}
