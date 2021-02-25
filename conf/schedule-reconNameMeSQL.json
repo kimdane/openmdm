@@ -1,0 +1,14 @@
+{
+    "enabled" : "&{schedule.reconNameMeSQL.enabled}",
+    "persisted" : true,
+    "concurrentExecution" : false,
+    "type" : "cron",
+    "schedule" : "&{schedule.reconNameMeSQL.cron}",
+    "timeZone" : "Europe/Oslo",
+    "invokeLogLevel" : "info",
+    "invokeService" : "sync",
+    "invokeContext" : {
+        "action" : "reconcile",
+        "mapping" : "systemNameMeSQL_managedUser"
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "enabled" : "&{schedule.reconNameMeREST.enabled}",
+    "persisted" : true,
+    "concurrentExecution" : false,
+    "type" : "cron",
+    "schedule" : "&{schedule.reconNameMeREST.cron}",
+    "timeZone" : "Europe/Oslo",
+    "invokeLogLevel" : "info",
+    "invokeService" : "sync",
+    "invokeContext" : {
+        "action" : "reconcile",
+        "mapping" : "managedUser_systemNameMeRESTContact-persons"
+    }
+}

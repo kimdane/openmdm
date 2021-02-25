@@ -1,0 +1,14 @@
+{
+    "enabled" : "&{schedule.liveSyncNameMeSQL.enabled}",
+    "persisted" : true,
+    "concurrentExecution" : false,
+    "type" : "cron",
+    "schedule" : "&{schedule.liveSyncNameMeSQL.cron}",
+    "timeZone" : "Europe/Oslo",
+    "invokeLogLevel" : "info",
+    "invokeService" : "provisioner",
+    "invokeContext" : {
+        "action" : "liveSync",
+        "source" : "system/namemesql/account"
+    }
+}

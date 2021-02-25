@@ -1,0 +1,375 @@
+{
+    "name" : "nameMeCREST",
+    "enabled" : false,
+    "connectorRef" : {
+        "connectorHostRef" : "#LOCAL",
+        "connectorName" : "org.forgerock.openicf.connectors.scriptedcrest.ScriptedCRESTConnector",
+        "bundleName" : "org.forgerock.openicf.connectors.groovy-connector",
+        "bundleVersion" : "[1.4.0.0,1.5.0.0)"
+    },
+    "poolConfigOption" : {
+        "maxObjects" : 10,
+        "maxIdle" : 10,
+        "maxWait" : 150000,
+        "minEvictableIdleTimeMillis" : 120000,
+        "minIdle" : 1
+    },
+    "operationTimeout" : {
+        "CREATE" : -1,
+        "UPDATE" : -1,
+        "DELETE" : -1,
+        "TEST" : 5000,
+        "SCRIPT_ON_CONNECTOR" : -1,
+        "SCRIPT_ON_RESOURCE" : -1,
+        "GET" : -1,
+        "RESOLVEUSERNAME" : -1,
+        "AUTHENTICATE" : -1,
+        "SEARCH" : -1,
+        "VALIDATE" : -1,
+        "SYNC" : -1,
+        "SCHEMA" : -1
+    },
+    "resultsHandlerConfig" : {
+        "enableNormalizingResultsHandler" : true,
+        "enableFilteredResultsHandler" : true,
+        "enableCaseInsensitiveFilter" : false,
+        "enableAttributesToGetSearchResultsHandler" : true
+    },
+    "configurationProperties" : {
+        "serviceAddress" : "&{nameMeCREST.url}",
+        "proxyAddress" : null,
+        "username" : "&{nameMeCREST.user}",
+        "password" : "&{nameMeCREST.password}",
+        "defaultAuthMethod" : "BASIC_PREEMPTIVE",
+        "defaultRequestHeaders" : [
+            null
+        ],
+        "defaultContentType" : "application/json",
+        "scriptExtensions" : [
+            "groovy"
+        ],
+        "sourceEncoding" : "UTF-8",
+        "authenticateScriptFileName" : "AuthenticateScript.groovy",
+        "customizerScriptFileName" : "CustomizerScript.groovy",
+        "createScriptFileName" : "CreateScript.groovy",
+        "deleteScriptFileName" : "DeleteScript.groovy",
+        "resolveUsernameScriptFileName" : "ResolveUsernameScript.groovy",
+        "schemaScriptFileName" : "SchemaScript.groovy",
+        "scriptOnResourceScriptFileName" : "ScriptOnResourceScript.groovy",
+        "searchScriptFileName" : "SearchScript.groovy",
+        "syncScriptFileName" : "SyncScript.groovy",
+        "testScriptFileName" : "TestScript.groovy",
+        "updateScriptFileName" : "UpdateScript.groovy",
+        "scriptBaseClass" : null,
+        "recompileGroovySource" : true,
+        "minimumRecompilationInterval" : 100,
+        "debug" : true,
+        "verbose" : true,
+        "warningLevel" : 1,
+        "tolerance" : 10,
+        "disabledGlobalASTTransformations" : null,
+        "targetDirectory" : null,
+        "scriptRoots" : [
+            "&{launcher.project.location}/groovy/nameMeCREST/"
+        ]
+    },
+    "objectTypes" : {
+        "user" : {
+            "$schema" : "http://json-schema.org/draft-03/schema",
+            "id" : "__ACCOUNT__",
+            "type" : "object",
+            "nativeType" : "__ACCOUNT__",
+            "properties" : {
+                "_meta" : {
+                    "type" : "object",
+                    "items" : {
+                        "type" : "object",
+                        "nativeType" : "object"
+                    },
+                    "nativeName" : "_meta",
+                    "nativeType" : "object",
+                    "flags" : [
+                        "NOT_CREATABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "_id" : {
+                    "type" : "string",
+                    "required" : true,
+                    "nativeName" : "__NAME__",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "sunset" : {
+                    "type" : "object",
+                    "items" : {
+                        "type" : "object",
+                        "nativeType" : "object"
+                    },
+                    "nativeType" : "object",
+                    "nativeName" : "sunset",
+                    "flags" : [
+                        "NOT_CREATABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "userName" : {
+                    "type" : "string",
+                    "nativeName" : "userName",
+                    "nativeType" : "string"
+                },
+                "resourceId" : {
+                    "type" : "string",
+                    "nativeName" : "resourceId",
+                    "nativeType" : "string"
+                },
+                "dbLastUpdate" : {
+                    "type" : "string",
+                    "nativeName" : "dbLastUpdate",
+                    "nativeType" : "string"
+                },
+                "givenName" : {
+                    "type" : "string",
+                    "nativeName" : "givenName",
+                    "nativeType" : "string"
+                },
+                "sn" : {
+                    "type" : "string",
+                    "nativeName" : "sn",
+                    "nativeType" : "string"
+                },
+                "mail" : {
+                    "type" : "string",
+                    "nativeName" : "mail",
+                    "nativeType" : "string"
+                },
+                "departmentCode" : {
+                    "type" : "string",
+                    "nativeName" : "departmentCode",
+                    "nativeType" : "string"
+                },
+                "divisionName" : {
+                    "type" : "string",
+                    "nativeName" : "divisionName",
+                    "nativeType" : "string"
+                },
+                "employmentTypeName" : {
+                    "type" : "string",
+                    "nativeName" : "employmentTypeName",
+                    "nativeType" : "string"
+                },
+                "status" : {
+                    "type" : "string",
+                    "nativeName" : "status",
+                    "nativeType" : "string"
+                },
+                "startDate" : {
+                    "type" : "string",
+                    "nativeName" : "startDate",
+                    "nativeType" : "string"
+                },
+                "post_date_from" : {
+                    "type" : "string",
+                    "nativeName" : "post_date_from",
+                    "nativeType" : "string"
+                },
+                "endDate" : {
+                    "type" : "string",
+                    "nativeName" : "endDate",
+                    "nativeType" : "string"
+                },
+                "resourceType" : {
+                    "type" : "string",
+                    "nativeName" : "resourceType",
+                    "nativeType" : "string"
+                },
+                "employmentType" : {
+                    "type" : "string",
+                    "nativeName" : "employmentType",
+                    "nativeType" : "string"
+                },
+                "title" : {
+                    "type" : "string",
+                    "nativeName" : "title",
+                    "nativeType" : "string"
+                },
+                "probationEndDate" : {
+                    "type" : "string",
+                    "nativeName" : "probationEndDate",
+                    "nativeType" : "string"
+                },
+                "leaveCode" : {
+                    "type" : "string",
+                    "nativeName" : "leaveCode",
+                    "nativeType" : "string"
+                },
+                "leaveAgreement" : {
+                    "type" : "string",
+                    "nativeName" : "leaveAgreement",
+                    "nativeType" : "string"
+                },
+                "managerId" : {
+                    "type" : "string",
+                    "nativeName" : "managerId",
+                    "nativeType" : "string"
+                },
+                "managerName" : {
+                    "type" : "string",
+                    "nativeName" : "managerName",
+                    "nativeType" : "string"
+                },
+                "departmentId" : {
+                    "type" : "string",
+                    "nativeName" : "departmentId",
+                    "nativeType" : "string"
+                },
+                "secondDepartmentId" : {
+                    "type" : "string",
+                    "nativeName" : "secondDepartmentId",
+                    "nativeType" : "string"
+                },
+                "thirdDepartmentId" : {
+                    "type" : "string",
+                    "nativeName" : "thirdDepartmentId",
+                    "nativeType" : "string"
+                },
+                "fourthDepartmentId" : {
+                    "type" : "string",
+                    "nativeName" : "fourthDepartmentId",
+                    "nativeType" : "string"
+                },
+                "nextDepartmentId" : {
+                    "type" : "string",
+                    "nativeName" : "nextDepartmentId",
+                    "nativeType" : "string"
+                },
+                "departmentName" : {
+                    "type" : "string",
+                    "nativeName" : "departmentName",
+                    "nativeType" : "string"
+                },
+                "secondDepartmentName" : {
+                    "type" : "string",
+                    "nativeName" : "secondDepartmentName",
+                    "nativeType" : "string"
+                },
+                "thirdDepartmentName" : {
+                    "type" : "string",
+                    "nativeName" : "thirdDepartmentName",
+                    "nativeType" : "string"
+                },
+                "fourthDepartmentName" : {
+                    "type" : "string",
+                    "nativeName" : "fourthDepartmentName",
+                    "nativeType" : "string"
+                },
+                "nextDepartmentName" : {
+                    "type" : "string",
+                    "nativeName" : "nextDepartmentName",
+                    "nativeType" : "string"
+                },
+                "departmentPercentage" : {
+                    "type" : "string",
+                    "nativeName" : "departmentPercentage",
+                    "nativeType" : "string"
+                },
+                "secondDepartmentPercentage" : {
+                    "type" : "string",
+                    "nativeName" : "secondDepartmentPercentage",
+                    "nativeType" : "string"
+                },
+                "thirdDepartmentPercentage" : {
+                    "type" : "string",
+                    "nativeName" : "thirdDepartmentPercentage",
+                    "nativeType" : "string"
+                },
+                "fourthDepartmentPercentage" : {
+                    "type" : "string",
+                    "nativeName" : "fourthDepartmentPercentage",
+                    "nativeType" : "string"
+                },
+                "exit_reason" : {
+                    "type" : "string",
+                    "nativeName" : "exit_reason",
+                    "nativeType" : "string"
+                },
+                "post_id" : {
+                    "type" : "string",
+                    "nativeName" : "post_id",
+                    "nativeType" : "string"
+                },
+                "accountStatus" : {
+                    "type" : "string",
+                    "nativeName" : "accountStatus",
+                    "nativeType" : "string"
+                },
+                "mobile" : {
+                    "type" : "string",
+                    "nativeName" : "mobile",
+                    "nativeType" : "string"
+                },
+                "telephoneNumber" : {
+                    "type" : "string",
+                    "nativeName" : "telephoneNumber",
+                    "nativeType" : "string"
+                },
+                "sync" : {
+                    "type" : "string",
+                    "nativeName" : "sync",
+                    "nativeType" : "string"
+                },
+                "workPlace" : {
+                    "type" : "string",
+                    "nativeName" : "workPlace",
+                    "nativeType" : "string"
+                },
+                "caId" : {
+                    "type" : "string",
+                    "nativeName" : "caId",
+                    "nativeType" : "string"
+                },
+                "flags" : {
+                    "type" : "object",
+                    "items" : {
+                        "type" : "object",
+                        "nativeType" : "object"
+                    },
+                    "nativeType" : "object",
+                    "nativeName" : "flags",
+                    "flags" : [
+                        "NOT_CREATABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "beforeProbation" : {
+                    "type" : "object",
+                    "items" : {
+                        "type" : "object",
+                        "nativeType" : "object"
+                    },
+                    "nativeType" : "object",
+                    "nativeName" : "beforeProbation",
+                    "flags" : [
+                        "NOT_CREATABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "sunrise" : {
+                    "type" : "object",
+                    "items" : {
+                        "type" : "object",
+                        "nativeType" : "object"
+                    },
+                    "nativeType" : "object",
+                    "nativeName" : "sunrise",
+                    "flags" : [
+                        "NOT_CREATABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                }
+            }
+        }
+    }
+}

@@ -170,6 +170,22 @@ var httpAccessConfig =
             "customAuthz" : "(checkIfUIIsEnabled('forgotUsername') || checkIfUIIsEnabled('passwordReset') || checkIfUIIsEnabled('selfRegistration')) && isSelfServiceRequest()"
         },
 
+        // Schema service that provides sanitized schema data needed to support the UI
+        {
+            "pattern"    : "schema/*",
+            "roles"      : "openidm-authorized",
+            "methods"    : "read",
+            "actions"    : "*"
+        },
+
+        // Consent service that provides end-user functions related to Privacy & Consent
+        {
+            "pattern"    : "consent",
+            "roles"      : "openidm-authorized",
+            "methods"    : "action",
+            "actions"    : "*"
+        },
+
         // openidm-admin can request nearly anything (except query expressions on repo endpoints)
         {
             "pattern"   : "*",
@@ -216,6 +232,14 @@ var httpAccessConfig =
             "actions"   : "*", // default to all actions allowed
             "customAuthz" : "disallowCommandAction()"
         },
+        //allow the ability to delete links for a specific mapping
+        {
+            "pattern"   : "repo/link",
+            "roles"     : "openidm-admin",
+            "methods"   : "action",
+            "actions"   : "command",
+            "customAuthz" : "request.additionalParameters.commandId === 'delete-mapping-links'"
+        },
 
         // Additional checks for authenticated users
         {
@@ -244,8 +268,8 @@ var httpAccessConfig =
         {
             "pattern"   : "*",
             "roles"     : "openidm-authorized",
-            "methods"   : "read",
-            "actions"   : "*",
+            "methods"   : "read,action,delete",
+            "actions"   : "bind,unbind",
             "customAuthz" : "ownDataOnly()"
         },
         {
@@ -260,7 +284,7 @@ var httpAccessConfig =
             "roles"     : "openidm-authorized",
             "methods"   : "patch,action",
             "actions"   : "patch",
-            "customAuthz" : "(request.resourcePath === 'selfservice/user/' + context.security.authorization.id) && onlyEditableManagedObjectProperties('user')"
+            "customAuthz" : "(request.resourcePath === 'selfservice/user/' + context.security.authorization.id) && onlyEditableManagedObjectProperties('user', [])"
         },
 
         // enforcement of which notifications you can read and delete is done within the endpoint
@@ -314,7 +338,7 @@ var httpAccessConfig =
         },
         {
             "pattern"   : "workflow/processdefinition/*",
-            "roles"     : "openidm-authorized",
+            "roles"     : "openidm-admin",
             "methods"   : "*",
             "actions"   : "read",
             "customAuthz": "isOneOfMyWorkflows()"

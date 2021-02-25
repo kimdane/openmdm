@@ -1,0 +1,680 @@
+{
+    "name" : "nameMeSQL",
+    "enabled" : false,
+    "connectorRef" : {
+        "bundleName" : "org.forgerock.openicf.connectors.groovy-connector",
+        "bundleVersion" : "[1.4.1.0,2.0.0.0)",
+        "connectorName" : "org.forgerock.openicf.connectors.scriptedsql.ScriptedSQLConnector"
+    },
+    "producerBufferSize" : 100,
+    "connectorPoolingSupported" : true,
+    "poolConfigOption" : {
+        "maxObjects" : 10,
+        "maxIdle" : 10,
+        "maxWait" : 150000,
+        "minEvictableIdleTimeMillis" : 120000,
+        "minIdle" : 1
+    },
+    "operationTimeout" : {
+        "CREATE" : -1,
+        "TEST" : 6000,
+        "AUTHENTICATE" : -1,
+        "SEARCH" : -1,
+        "VALIDATE" : -1,
+        "GET" : -1,
+        "UPDATE" : -1,
+        "DELETE" : -1,
+        "SCRIPT_ON_CONNECTOR" : -1,
+        "SCRIPT_ON_RESOURCE" : -1,
+        "SYNC" : -1,
+        "SCHEMA" : -1
+    },
+    "configurationProperties" : {
+        "username" : "&{nameMeSQL.db.user}",
+        "password" : "&{nameMeSQL.db.password}",
+        "driverClassName" : "com.microsoft.sqlserver.jdbc.SQLServerDriver",
+        "url" : "jdbc:sqlserver://&{nameMeSQL.db.host}:&{nameMeSQL.db.port};databaseName=&{nameMeSQL.db.name};applicationName=OpenIDM",
+        "autoCommit" : true,
+        "reloadScriptOnExecution" : false,
+        "createScriptFileName" : "NotImplementedScript.groovy",
+        "testScriptFileName" : "TestScript.groovy",
+        "searchScriptFileName" : "SearchScript.groovy",
+        "deleteScriptFileName" : "NotImplementedScript.groovy",
+        "updateScriptFileName" : "NotImplementedScript.groovy",
+        "syncScriptFileName" : "SyncScript.groovy",
+        "classpath" : [
+            "&{launcher.project.location}/groovy/nameMeSQL"
+        ],
+        "scriptRoots" : [
+            "&{launcher.project.location}/groovy/nameMeSQL"
+        ]
+    },
+    "syncFailureHandler" : {
+        "maxRetries" : 5,
+        "postRetryAction" : "logged-ignore"
+    },
+    "objectTypes" : {
+        "account" : {
+            "$schema" : "http://json-schema.org/draft-03/schema",
+            "id" : "__ACCOUNT__",
+            "type" : "object",
+            "nativeType" : "__ACCOUNT__",
+            "properties" : {
+                "resource_id" : {
+                    "type" : "string",
+                    "nativeName" : "__UID__",
+                    "required" : true,
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "short_name" : {
+                    "type" : "string",
+                    "nativeName" : "__NAME__",
+                    "nativeType" : "string",
+                    "required" : true,
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "first_name" : {
+                    "type" : "string",
+                    "nativeName" : "first_name",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "surname" : {
+                    "type" : "string",
+                    "nativeName" : "surname",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "name" : {
+                    "type" : "string",
+                    "nativeName" : "name",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "client" : {
+                    "type" : "string",
+                    "nativeName" : "client",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "status" : {
+                    "type" : "string",
+                    "nativeName" : "status",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "telephone_1" : {
+                    "type" : "string",
+                    "nativeName" : "telephone_1",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "pos_type" : {
+                    "type" : "string",
+                    "nativeName" : "pos_type",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "pos_type_next" : {
+                    "type" : "string",
+                    "nativeName" : "pos_type_next",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "resource_typ" : {
+                    "type" : "string",
+                    "nativeName" : "resource_typ",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "sex" : {
+                    "type" : "string",
+                    "nativeName" : "sex",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "date_from" : {
+                    "type" : "string",
+                    "nativeName" : "date_from",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "date_to" : {
+                    "type" : "string",
+                    "nativeName" : "date_to",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "expired_date" : {
+                    "type" : "string",
+                    "nativeName" : "expired_date",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "exit_reason" : {
+                    "type" : "string",
+                    "nativeName" : "exit_reason",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "post_id" : {
+                    "type" : "string",
+                    "nativeName" : "post_id",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "post_date_from" : {
+                    "type" : "string",
+                    "nativeName" : "post_date_from",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "post_name" : {
+                    "type" : "string",
+                    "nativeName" : "post_name",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "post_name_next" : {
+                    "type" : "string",
+                    "nativeName" : "post_name_next",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "parttime_pct_pos" : {
+                    "type" : "string",
+                    "nativeName" : "parttime_pct_pos",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "parttime_pct_pos_next" : {
+                    "type" : "string",
+                    "nativeName" : "parttime_pct_pos_next",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "superior" : {
+                    "type" : "string",
+                    "nativeName" : "superior",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "superior_name" : {
+                    "type" : "string",
+                    "nativeName" : "superior_name",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "superior_next" : {
+                    "type" : "string",
+                    "nativeName" : "superior_next",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "superior_next_name" : {
+                    "type" : "string",
+                    "nativeName" : "superior_next_name",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "superior_next_date" : {
+                    "type" : "string",
+                    "nativeName" : "superior_next_date",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "department_1" : {
+                    "type" : "string",
+                    "nativeName" : "department_1",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "department_2" : {
+                    "type" : "string",
+                    "nativeName" : "department_2",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "department_3" : {
+                    "type" : "string",
+                    "nativeName" : "department_3",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "department_4" : {
+                    "type" : "string",
+                    "nativeName" : "department_4",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "dept_name_1" : {
+                    "type" : "string",
+                    "nativeName" : "dept_name_1",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "dept_name_2" : {
+                    "type" : "string",
+                    "nativeName" : "dept_name_2",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "dept_name_3" : {
+                    "type" : "string",
+                    "nativeName" : "dept_name_3",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "dept_name_4" : {
+                    "type" : "string",
+                    "nativeName" : "dept_name_4",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "department_next_1" : {
+                    "type" : "string",
+                    "nativeName" : "department_next_1",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "parttime_pct_1" : {
+                    "type" : "string",
+                    "nativeName" : "parttime_pct_1",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "parttime_pct_2" : {
+                    "type" : "string",
+                    "nativeName" : "parttime_pct_2",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "parttime_pct_3" : {
+                    "type" : "string",
+                    "nativeName" : "parttime_pct_3",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "parttime_pct_4" : {
+                    "type" : "string",
+                    "nativeName" : "parttime_pct_4",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "dept_name_next_1" : {
+                    "type" : "string",
+                    "nativeName" : "dept_name_next_1",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "department_next_fromdate" : {
+                    "type" : "string",
+                    "nativeName" : "department_next_fromdate",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "permcode" : {
+                    "type" : "string",
+                    "nativeName" : "permcode",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "permavt" : {
+                    "type" : "string",
+                    "nativeName" : "permavt",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "perm_date_from" : {
+                    "type" : "string",
+                    "nativeName" : "perm_date_from",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "perm_date_to" : {
+                    "type" : "string",
+                    "nativeName" : "perm_date_to",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "last_update" : {
+                    "type" : "string",
+                    "nativeName" : "last_update",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                }
+            }
+        },
+        "department" : {
+            "$schema" : "http://json-schema.org/draft-03/schema",
+            "id" : "__DEPARTMENT__",
+            "type" : "object",
+            "nativeType" : "__DEPARTMENT__",
+            "properties" : {
+                "department_1" : {
+                    "type" : "string",
+                    "nativeName" : "__UID__",
+                    "required" : true,
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "dept_description" : {
+                    "type" : "string",
+                    "nativeName" : "__NAME__",
+                    "nativeType" : "string",
+                    "required" : true,
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "dept_name_1" : {
+                    "type" : "string",
+                    "nativeName" : "dept_name_1",
+                    "nativeType" : "string",
+                    "required" : true,
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "last_update" : {
+                    "type" : "string",
+                    "nativeName" : "last_update",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                }
+			}
+        },
+        "post" : {
+            "$schema" : "http://json-schema.org/draft-03/schema",
+            "id" : "__POST__",
+            "type" : "object",
+            "nativeType" : "__POST__",
+            "properties" : {
+                "post_id" : {
+                    "type" : "string",
+                    "nativeName" : "__UID__",
+                    "required" : true,
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "post_name" : {
+                    "type" : "string",
+                    "nativeName" : "__NAME__",
+                    "nativeType" : "string",
+                    "required" : true,
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "resource_typ" : {
+                    "type" : "string",
+                    "nativeName" : "resource_typ",
+                    "nativeType" : "string",
+                    "required" : true,
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "pos_type" : {
+                    "type" : "string",
+                    "nativeName" : "pos_type",
+                    "nativeType" : "string",
+                    "required" : true,
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "last_update" : {
+                    "type" : "string",
+                    "nativeName" : "last_update",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                }
+			}
+        },
+        "type" : {
+            "$schema" : "http://json-schema.org/draft-03/schema",
+            "id" : "__TYPE__",
+            "type" : "object",
+            "nativeType" : "__TYPE__",
+            "properties" : {
+                "pos_type" : {
+                    "type" : "string",
+                    "nativeName" : "__UID__",
+                    "required" : true,
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "pos_type" : {
+                    "type" : "string",
+                    "nativeName" : "__NAME__",
+                    "required" : true,
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "resource_typ" : {
+                    "type" : "string",
+                    "nativeName" : "resource_typ",
+                    "nativeType" : "string",
+                    "required" : true,
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "last_update" : {
+                    "type" : "string",
+                    "nativeName" : "last_update",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_CREATEABLE",
+                        "NOT_UPDATEABLE"
+                    ]
+                }
+			}
+        }
+    },
+    "operationOptions" : {
+        "CREATE" : {
+            "denied" : true,
+            "onDeny" : "THROW_EXCEPTION"
+        },
+        "UPDATE" : {
+            "denied" : true,
+            "onDeny" : "THROW_EXCEPTION"
+        },
+        "DELETE" : {
+            "denied" : true,
+            "onDeny" : "THROW_EXCEPTION"
+        },
+        "AUTHENTICATE" : {
+            "denied" : true,
+            "onDeny" : "THROW_EXCEPTION"
+        },
+        "RESOLVEUSERNAME" : {
+            "denied" : true,
+            "onDeny" : "THROW_EXCEPTION"
+        },
+        "SCHEMA" : {
+            "denied" : true,
+            "onDeny" : "THROW_EXCEPTION"
+        },
+        "SCRIPT_ON_CONNECTOR" : {
+            "denied" : true,
+            "onDeny" : "THROW_EXCEPTION"
+        },
+        "SCRIPT_ON_RESOURCE" : {
+            "denied" : true,
+            "onDeny" : "THROW_EXCEPTION"
+        },
+        "VALIDATE" : {
+            "denied" : true,
+            "onDeny" : "THROW_EXCEPTION"
+        }
+    }
+}

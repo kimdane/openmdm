@@ -41,7 +41,6 @@
                     "accountStatus",
                     "telephoneNumber",
                     "postalAddress",
-                    "address2",
                     "city",
                     "postalCode",
                     "country",
@@ -176,6 +175,54 @@
                         "viewable" : true,
                         "userEditable" : true
                     },
+                    "workPlace" : {
+                        "type" : "relationship",
+                        "validate" : false,
+                        "reverseRelationship" : true,
+                        "reversePropertyName" : "users",
+                        "title" : "WorkPlace",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "returnByDefault" : true,
+                        "usageDescription" : "",
+                        "isPersonal" : false,
+                        "properties" : {
+                            "_ref" : {
+                                "description" : "References a relationship from a managed object",
+                                "type" : "string"
+                            },
+                            "_refProperties" : {
+                                "description" : "Supports metadata within the relationship",
+                                "type" : "object",
+                                "title" : "WorkPlace _refProperties",
+                                "properties" : {
+                                    "_id" : {
+                                        "description" : "_refProperties object ID",
+                                        "type" : "string",
+                                        "required" : false,
+                                        "propName" : "_id"
+                                    }
+                                }
+                            }
+                        },
+                        "resourceCollection" : [
+                            {
+                                "path" : "managed/entity",
+                                "label" : "Entity",
+                                "query" : {
+                                    "queryFilter" : "true",
+                                    "fields" : [
+                                        "name",
+                                        "description"
+                                    ],
+                                    "sortKeys" : [ ]
+                                }
+                            }
+                        ],
+                        "userEditable" : false,
+                        "description" : "",
+                        "returnByDefault" : false
+                    },
                     "country" : {
                         "type" : "string",
                         "title" : "Country",
@@ -194,6 +241,53 @@
                         "type" : "string",
                         "searchable" : true,
                         "userEditable" : false
+                    },
+                    "devices" : {
+                        "description" : "",
+                        "title" : "Devices and Entities",
+                        "viewable" : true,
+                        "searchable" : false,
+                        "userEditable" : false,
+                        "policies" : [ ],
+                        "returnByDefault" : true,
+                        "minLength" : null,
+                        "pattern" : "",
+                        "type" : "array",
+                        "items" : {
+                            "type" : "relationship",
+                            "reverseRelationship" : true,
+                            "reversePropertyName" : "resource_contact",
+                            "validate" : true,
+                            "properties" : {
+                                "_ref" : {
+                                    "type" : "string"
+                                },
+                                "_refProperties" : {
+                                    "type" : "object",
+                                    "properties" : {
+                                        "_id" : {
+                                            "type" : "string",
+                                            "required" : false,
+                                            "propName" : "_id"
+                                        }
+                                    }
+                                }
+                            },
+                            "resourceCollection" : [
+                                {
+                                    "path" : "managed/entity",
+                                    "label" : "Entity",
+                                    "query" : {
+                                        "queryFilter" : "true",
+                                        "fields" : [
+                                            "name",
+                                            "description"
+                                        ],
+                                        "sortKeys" : [ ]
+                                    }
+                                }
+                            ]
+                        }
                     },
                     "roles" : {
                         "description" : "",
@@ -369,6 +463,34 @@
                         "items" : {
                             "type" : "object"
                         }
+                    },
+                    "title" : {
+                        "title" : "Title",
+                        "type" : "string",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true
+                    },
+                    "employmentType" : {
+                        "title" : "Employment Type",
+                        "type" : "string",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true
+                    },
+                    "resourceType" : {
+                        "title" : "Resource Type",
+                        "type" : "string",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true
+                    },
+                    "mobile" : {
+                        "title" : "Mobile Phone",
+                        "type" : "string",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true
                     },
                     "telephoneNumber" : {
                         "type" : "string",
@@ -836,6 +958,718 @@
                     "linkQualifiers"
                 ]
             }
-        }
+        },
+        {
+            "name" : "group",
+            "schema" : {
+                "$schema" : "http://forgerock.org/json-schema#",
+                "type" : "object",
+                "title" : "Group",
+                "description" : "",
+                "icon" : "",
+                "properties" : {
+                    "name" : {
+                        "type" : "string",
+                        "searchable" : "true",
+                        "viewable" : "true"
+                    },
+                    "description" : {
+                        "type" : [
+                            "string",
+                            "null"
+                        ],
+                        "searchable" : "false",
+                        "viewable" : "true"
+                    },
+                    "dn" : {
+                        "type" : "string",
+                        "searchable" : "true",
+                        "viewable" : "true"
+                    },
+                    "member" : {
+                        "type" : "array",
+                        "searchable" : "false",
+                        "viewable" : "true",
+                        "items" : {
+                            "type" : "string"
+                        }
+                    },
+                    "groupType" : {
+                        "title" : "",
+                        "type" : "number",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true
+                    },
+                    "parentDepartments" : {
+                        "description" : "",
+                        "title" : "Departments",
+                        "viewable" : true,
+                        "searchable" : false,
+                        "userEditable" : false,
+                        "policies" : [ ],
+                        "returnByDefault" : true,
+                        "minLength" : null,
+                        "pattern" : "",
+                        "type" : "array",
+                        "items" : {
+                            "type" : "relationship",
+                            "reverseRelationship" : true,
+                            "reversePropertyName" : "emailLists",
+                            "validate" : true,
+                            "properties" : {
+                                "_ref" : {
+                                    "type" : "string"
+                                },
+                                "_refProperties" : {
+                                    "type" : "object",
+                                    "properties" : {
+                                        "_id" : {
+                                            "type" : "string",
+                                            "required" : false,
+                                            "propName" : "_id"
+                                        }
+                                    }
+                                }
+                            },
+                            "resourceCollection" : [
+                                {
+                                    "path" : "managed/department",
+                                    "label" : "Department",
+                                    "query" : {
+                                        "queryFilter" : "true",
+                                        "fields" : [
+                                            "name",
+                                            "code",
+                                            "description"
+                                        ],
+                                        "sortKeys" : [ ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                },
+                "order" : [
+                    "name",
+                    "description",
+                    "dn",
+                    "member",
+                    "groupType",
+                    "parentDepartments"
+                ],
+                "required" : [
+                    "dn"
+                ]
+            },
+            "iconClass" : "icon-database",
+            "iconSrc" : "img/icon-managedobject.png",
+            "type" : "Managed Object"
+        },
+        {
+            "name" : "organization",
+            "schema" : {
+                "id" : "urn:jsonschema:org:forgerock:openidm:managed:api:Organization",
+                "$schema" : "http://forgerock.org/json-schema#",
+                "type" : "object",
+                "title" : "Organization",
+                "description" : "Organization",
+                "icon" : "fa-building",
+                "properties" : {
+                    "name" : {
+                        "title" : "",
+                        "type" : "string",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true
+                    },
+                    "departments" : {
+                        "description" : "",
+                        "title" : "Departments",
+                        "viewable" : true,
+                        "searchable" : false,
+                        "userEditable" : false,
+                        "policies" : [ ],
+                        "returnByDefault" : true,
+                        "minLength" : null,
+                        "pattern" : "",
+                        "type" : "array",
+                        "items" : {
+                            "type" : "relationship",
+                            "reverseRelationship" : true,
+                            "reversePropertyName" : "organization",
+                            "validate" : true,
+                            "properties" : {
+                                "_ref" : {
+                                    "type" : "string"
+                                },
+                                "_refProperties" : {
+                                    "type" : "object",
+                                    "properties" : {
+                                        "_id" : {
+                                            "type" : "string",
+                                            "required" : false,
+                                            "propName" : "_id"
+                                        }
+                                    }
+                                }
+                            },
+                            "resourceCollection" : [
+                                {
+                                    "path" : "managed/department",
+                                    "label" : "Department",
+                                    "query" : {
+                                        "queryFilter" : "true",
+                                        "fields" : [
+                                            "code",
+                                            "name",
+                                            "description"
+                                        ],
+                                        "sortKeys" : [ ]
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "web_url" : {
+                        "title" : "",
+                        "type" : "string",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : false
+                    },
+                    "org_num" : {
+                        "title" : "",
+                        "type" : "string",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true
+                    },
+                    "description" : {
+                        "title" : "",
+                        "type" : "string",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true
+                    },
+                    "id" : {
+                        "title" : "",
+                        "type" : "string",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true
+                    },
+                    "company" : {
+                        "title" : "",
+                        "type" : "string",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true
+                    },
+                    "alt_phone" : {
+                        "title" : "",
+                        "type" : "string",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true
+                    },
+                    "billing_code" : {
+                        "title" : "",
+                        "type" : "string",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true
+                    },
+                    "contact" : {
+                        "title" : "",
+                        "type" : "string",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true
+                    },
+                    "creation_user" : {
+                        "title" : "",
+                        "type" : "string",
+                        "viewable" : false,
+                        "searchable" : true,
+                        "userEditable" : false
+                    },
+                    "creation_date" : {
+                        "title" : "",
+                        "type" : "string",
+                        "viewable" : false,
+                        "searchable" : true,
+                        "userEditable" : false
+                    },
+                    "last_mod_dt" : {
+                        "title" : "",
+                        "type" : "string",
+                        "viewable" : false,
+                        "searchable" : true,
+                        "userEditable" : false
+                    },
+                    "last_mod_by" : {
+                        "title" : "",
+                        "type" : "string",
+                        "viewable" : false,
+                        "searchable" : true,
+                        "userEditable" : false
+                    },
+                    "email_addr" : {
+                        "title" : "",
+                        "type" : "string",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true
+                    },
+                    "fax_phone" : {
+                        "title" : "",
+                        "type" : "string",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true
+                    },
+                    "location" : {
+                        "title" : "",
+                        "type" : "string",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true
+                    },
+                    "phone_number" : {
+                        "title" : "",
+                        "type" : "string",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true
+                    },
+                    "service_type" : {
+                        "title" : "",
+                        "type" : "string",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true
+                    },
+                    "people" : {
+                        "description" : "People",
+                        "title" : "People",
+                        "viewable" : true,
+                        "userEditable" : false,
+                        "type" : "array",
+                        "returnByDefault" : true,
+                        "usageDescription" : "",
+                        "isPersonal" : false,
+                        "items" : {
+                            "type" : "relationship",
+                            "id" : "urn:jsonschema:org:forgerock:openidm:managed:api:Organization:people:items",
+                            "title" : "People Items",
+                            "reverseRelationship" : true,
+                            "reversePropertyName" : "organization",
+                            "validate" : true,
+                            "properties" : {
+                                "_ref" : {
+                                    "description" : "References a relationship from a managed object",
+                                    "type" : "string"
+                                },
+                                "_refProperties" : {
+                                    "description" : "Supports metadata within the relationship",
+                                    "type" : "object",
+                                    "title" : "People Items _refProperties",
+                                    "properties" : {
+                                        "_id" : {
+                                            "description" : "_refProperties object ID",
+                                            "type" : "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "resourceCollection" : [
+                                {
+                                    "path" : "managed/user",
+                                    "label" : "User",
+                                    "query" : {
+                                        "queryFilter" : "true",
+                                        "fields" : [
+                                            "userName",
+                                            "mail",
+                                            "givenName",
+                                            "sn"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "version_number" : {
+                        "title" : "",
+                        "type" : "string",
+                        "viewable" : false,
+                        "searchable" : true,
+                        "userEditable" : false
+                    },
+                    "delete_flag" : {
+                        "title" : "",
+                        "type" : "string",
+                        "viewable" : false,
+                        "searchable" : true,
+                        "userEditable" : false
+                    }
+                },
+                "order" : [
+                    "name",
+                    "org_num",
+                    "description",
+                    "web_url",
+                    "company",
+                    "alt_phone",
+                    "contact",
+                    "id",
+                    "creation_user",
+                    "creation_date",
+                    "last_mod_dt",
+                    "last_mod_by",
+                    "email_addr",
+                    "fax_phone",
+                    "location",
+                    "phone_number",
+                    "service_type",
+                    "version_number",
+                    "departments"
+                ],
+                "required" : [
+                    "name",
+                    "id"
+                ]
+            }
+        },
+        {
+            "name" : "entity",
+            "schema" : {
+                "$schema" : "http://forgerock.org/json-schema#",
+                "type" : "object",
+                "title" : "Entity",
+                "description" : "",
+                "icon" : "fa-phone-square",
+                "properties" : {
+                    "name" : {
+                        "title" : "",
+                        "type" : "string",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true
+                    },
+                    "description" : {
+                        "title" : "",
+                        "type" : "string",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true
+                    },
+                    "web_url" : {
+                        "title" : "",
+                        "type" : "string",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : false
+                    },
+                    "resource_contact" : {
+                        "title" : "",
+                        "type" : "relationship",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : false,
+                        "returnByDefault" : true,
+                        "reverseRelationship" : true,
+                        "reversePropertyName" : "devices",
+                        "validate" : true,
+                        "properties" : {
+                            "_ref" : {
+                                "type" : "string"
+                            },
+                            "_refProperties" : {
+                                "type" : "object",
+                                "properties" : {
+                                    "_id" : {
+                                        "type" : "string",
+                                        "required" : false,
+                                        "propName" : "_id"
+                                    }
+                                }
+                            }
+                        },
+                        "resourceCollection" : [
+                            {
+                                "path" : "managed/user",
+                                "label" : "User",
+                                "query" : {
+                                    "queryFilter" : "true",
+                                    "fields" : [
+                                        "givenName",
+                                        "sn",
+                                        "userName",
+                                        "mail"
+                                    ],
+                                    "sortKeys" : [ ]
+                                }
+                            }
+                        ],
+                        "description" : ""
+                    },
+                    "users" : {
+                        "description" : "",
+                        "title" : "Users",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : false,
+                        "policies" : [ ],
+                        "returnByDefault" : true,
+                        "minLength" : null,
+                        "pattern" : "",
+                        "type" : "array",
+                        "items" : {
+                            "type" : "relationship",
+                            "reverseRelationship" : true,
+                            "reversePropertyName" : "workPlace",
+                            "validate" : true,
+                            "properties" : {
+                                "_ref" : {
+                                    "description" : "References a relationship from a managed object",
+                                    "type" : "string"
+                                },
+                                "_refProperties" : {
+                                    "description" : "Supports metadata within the relationship",
+                                    "type" : "object",
+                                    "title" : "WorkPlace _refProperties",
+                                    "properties" : {
+                                        "_id" : {
+                                            "description" : "_refProperties object ID",
+                                            "type" : "string",
+                                            "required" : false,
+                                            "propName" : "_id"
+                                        }
+                                    }
+                                }
+                            },
+                            "resourceCollection" : [
+                                {
+                                    "path" : "managed/user",
+                                    "label" : "User",
+                                    "query" : {
+                                        "queryFilter" : "true",
+                                        "fields" : [
+                                            "givenName",
+                                            "sn",
+                                            "userName",
+                                            "mail"
+                                        ],
+                                        "sortKeys" : [ ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                },
+                "order" : [
+                    "name",
+                    "description",
+                    "web_url",
+                    "resource_contact",
+                    "users"
+                ],
+                "required" : [
+                    "name"
+                ]
+            }
+        },
+        {
+            "name" : "department",
+            "schema" : {
+                "$schema" : "http://forgerock.org/json-schema#",
+                "type" : "object",
+                "title" : "Department",
+                "description" : "",
+                "icon" : "fa-group",
+                "properties" : {
+                    "code" : {
+                        "title" : "",
+                        "type" : "string",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true
+                    },
+                    "name" : {
+                        "title" : "",
+                        "type" : "string",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true
+                    },
+                    "description" : {
+                        "title" : "",
+                        "type" : "string",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true
+                    },
+                    "last_update" : {
+                        "title" : "",
+                        "type" : "string",
+                        "viewable" : false,
+                        "searchable" : true,
+                        "userEditable" : false
+                    },
+                    "employees" : {
+                        "title" : "Employees",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : false,
+                        "returnByDefault" : true,
+                        "type" : "array",
+                        "items" : {
+                            "type" : "relationship",
+                            "reverseRelationship" : true,
+                            "reversePropertyName" : "departments",
+                            "validate" : true,
+                            "properties" : {
+                                "_ref" : {
+                                    "type" : "string"
+                                },
+                                "_refProperties" : {
+                                    "type" : "object",
+                                    "properties" : {
+                                        "_id" : {
+                                            "type" : "string",
+                                            "required" : false,
+                                            "propName" : "_id"
+                                        },
+                                        "percentage" : {
+                                            "label" : "",
+                                            "type" : "string",
+                                            "required" : false,
+                                            "propName" : "percentage"
+                                        }
+                                    }
+                                }
+                            },
+                            "resourceCollection" : [
+                                {
+                                    "path" : "managed/user",
+                                    "label" : "User",
+                                    "query" : {
+                                        "queryFilter" : "true",
+                                        "fields" : [
+                                            "givenName",
+                                            "sn",
+                                            "userName",
+                                            "accountStatus"
+                                        ],
+                                        "sortKeys" : [ ]
+                                    }
+                                }
+                            ]
+                        },
+                        "description" : ""
+                    },
+                    "organization" : {
+                        "title" : "Organization",
+                        "type" : "relationship",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : false,
+                        "returnByDefault" : true,
+                        "reverseRelationship" : true,
+                        "reversePropertyName" : "departments",
+                        "validate" : true,
+                        "properties" : {
+                            "_ref" : {
+                                "type" : "string"
+                            },
+                            "_refProperties" : {
+                                "type" : "object",
+                                "properties" : {
+                                    "_id" : {
+                                        "type" : "string",
+                                        "required" : false,
+                                        "propName" : "_id"
+                                    }
+                                }
+                            }
+                        },
+                        "resourceCollection" : [
+                            {
+                                "path" : "managed/organization",
+                                "label" : "Organization",
+                                "query" : {
+                                    "queryFilter" : "true",
+                                    "fields" : [
+                                        "name",
+                                        "description",
+                                        "org_num"
+                                    ],
+                                    "sortKeys" : [ ]
+                                }
+                            }
+                        ],
+                        "description" : ""
+                    },
+                    "emailLists" : {
+                        "title" : "Email Lists",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : false,
+                        "returnByDefault" : true,
+                        "description" : "",
+                        "type" : "array",
+                        "items" : {
+                            "type" : "relationship",
+                            "reverseRelationship" : true,
+                            "reversePropertyName" : "parentDepartments",
+                            "validate" : true,
+                            "properties" : {
+                                "_ref" : {
+                                    "type" : "string"
+                                },
+                                "_refProperties" : {
+                                    "type" : "object",
+                                    "properties" : {
+                                        "_id" : {
+                                            "type" : "string",
+                                            "required" : false,
+                                            "propName" : "_id"
+                                        }
+                                    }
+                                }
+                            },
+                            "resourceCollection" : [
+                                {
+                                    "path" : "managed/group",
+                                    "label" : "Group",
+                                    "query" : {
+                                        "queryFilter" : "true",
+                                        "fields" : [
+                                            "name",
+                                            "dn"
+                                        ],
+                                        "sortKeys" : [ ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                },
+                "order" : [
+                    "code",
+                    "name",
+                    "description",
+                    "last_update",
+                    "employees",
+                    "organization",
+                    "emailLists"
+                ],
+                "required" : [
+                    "code"
+                ]
+            }
+		}
     ]
 }
