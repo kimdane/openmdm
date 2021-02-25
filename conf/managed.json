@@ -29,6 +29,7 @@
             "schema" : {
                 "id" : "http://jsonschema.net",
                 "title" : "User",
+                "icon" : "fa-user",
                 "viewable" : true,
                 "$schema" : "http://json-schema.org/draft-03/schema",
                 "order" : [
@@ -635,6 +636,7 @@
                 "$schema" : "http://forgerock.org/json-schema#",
                 "type" : "object",
                 "title" : "Role",
+                "icon" : "fa-child",
                 "description" : "",
                 "properties" : {
                     "_id" : {
@@ -840,6 +842,7 @@
                 "$schema" : "http://forgerock.org/json-schema#",
                 "type" : "object",
                 "title" : "Assignment",
+                "icon" : "fa-list-alt",
                 "description" : "A role assignment",
                 "properties" : {
                     "_id" : {
@@ -966,7 +969,7 @@
                 "type" : "object",
                 "title" : "Group",
                 "description" : "",
-                "icon" : "",
+                "icon" : "fa-group",
                 "properties" : {
                     "name" : {
                         "type" : "string",
@@ -1074,7 +1077,7 @@
                 "type" : "object",
                 "title" : "Organization",
                 "description" : "Organization",
-                "icon" : "fa-building",
+                "icon" : "fa-building-o",
                 "properties" : {
                     "name" : {
                         "title" : "",
@@ -1349,7 +1352,7 @@
                 "type" : "object",
                 "title" : "Entity",
                 "description" : "",
-                "icon" : "fa-phone-square",
+                "icon" : "fa-android",
                 "properties" : {
                     "name" : {
                         "title" : "",
@@ -1488,7 +1491,7 @@
                 "type" : "object",
                 "title" : "Department",
                 "description" : "",
-                "icon" : "fa-group",
+                "icon" : "fa-building",
                 "properties" : {
                     "code" : {
                         "title" : "",
