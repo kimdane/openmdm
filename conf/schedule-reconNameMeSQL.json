@@ -4,7 +4,6 @@
     "concurrentExecution" : false,
     "type" : "cron",
     "schedule" : "&{schedule.reconNameMeSQL.cron}",
-    "timeZone" : "Europe/Oslo",
     "invokeLogLevel" : "info",
     "invokeService" : "sync",
     "invokeContext" : {
