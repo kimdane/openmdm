@@ -26,10 +26,6 @@
                     "target" : "member"
                 },
                 {
-                    "source" : "sAMAccountName",
-                    "target" : "sAMAccountName"
-                },
-                {
                     "source" : "cn",
                     "transform" : {
                         "type" : "text/javascript",
@@ -1611,6 +1607,219 @@
                         ]
                     },
                     "mapping" : "managedUser_systemNameMeRESTContact-persons",
+                    "type" : "text/javascript",
+                    "file" : "ui/correlateTreeToQueryFilter.js"
+                }
+            ]
+        },
+        {
+            "target" : "managed/scmProject",
+            "source" : "system/bitbucket/project",
+            "name" : "systemBitbucketProject_managedSCMProject",
+            "properties" : [
+                {
+                    "target" : "id",
+                    "source" : "id"
+                },
+                {
+                    "target" : "key",
+                    "source" : "key"
+                },
+                {
+                    "target" : "name",
+                    "source" : "name"
+                },
+                {
+                    "target" : "type",
+                    "source" : "type"
+                },
+                {
+                    "target" : "links",
+                    "source" : "links"
+                },
+                {
+                    "target" : "public",
+                    "source" : "public"
+                }
+            ],
+            "policies" : [
+                {
+                    "action" : "EXCEPTION",
+                    "situation" : "AMBIGUOUS"
+                },
+                {
+                    "action" : "EXCEPTION",
+                    "situation" : "SOURCE_MISSING"
+                },
+                {
+                    "action" : "EXCEPTION",
+                    "situation" : "MISSING"
+                },
+                {
+                    "action" : "EXCEPTION",
+                    "situation" : "FOUND_ALREADY_LINKED"
+                },
+                {
+                    "action" : "DELETE",
+                    "situation" : "UNQUALIFIED"
+                },
+                {
+                    "action" : "EXCEPTION",
+                    "situation" : "UNASSIGNED"
+                },
+                {
+                    "action" : "EXCEPTION",
+                    "situation" : "LINK_ONLY"
+                },
+                {
+                    "action" : "IGNORE",
+                    "situation" : "TARGET_IGNORED"
+                },
+                {
+                    "action" : "IGNORE",
+                    "situation" : "SOURCE_IGNORED"
+                },
+                {
+                    "action" : "IGNORE",
+                    "situation" : "ALL_GONE"
+                },
+                {
+                    "action" : "UPDATE",
+                    "situation" : "CONFIRMED"
+                },
+                {
+                    "action" : "UPDATE",
+                    "situation" : "FOUND"
+                },
+                {
+                    "action" : "CREATE",
+                    "situation" : "ABSENT"
+                }
+            ],
+            "correlationQuery" : [
+                {
+                    "linkQualifier" : "default",
+                    "expressionTree" : {
+                        "any" : [
+                            "id",
+                            "key"
+                        ]
+                    },
+                    "mapping" : "systemBitbucketProject_managedSCMProject",
+                    "type" : "text/javascript",
+                    "file" : "ui/correlateTreeToQueryFilter.js"
+                }
+            ]
+        },
+        {
+            "target" : "managed/scmRepo",
+            "source" : "system/bitbucket/repo",
+            "name" : "systemBitbucketProject_managedSCMRepo",
+            "properties" : [
+                {
+                    "target" : "id",
+                    "source" : "id"
+                },
+                {
+                    "target" : "slug",
+                    "source" : "slug"
+                },
+                {
+                    "target" : "name",
+                    "source" : "name"
+                },
+                {
+                    "target" : "description",
+                    "source" : "description"
+                },
+                {
+                    "target" : "scmId",
+                    "source" : "scmId"
+                },
+                {
+                    "target" : "state",
+                    "source" : "state"
+                },
+                {
+                    "target" : "statusMessage",
+                    "source" : "statusMessage"
+                },
+                {
+                    "target" : "forkable",
+                    "source" : "forkable"
+                },
+                {
+                    "target" : "links",
+                    "source" : "links"
+                },
+                {
+                    "target" : "public",
+                    "source" : "public"
+                }
+            ],
+            "policies" : [
+                {
+                    "action" : "EXCEPTION",
+                    "situation" : "AMBIGUOUS"
+                },
+                {
+                    "action" : "EXCEPTION",
+                    "situation" : "SOURCE_MISSING"
+                },
+                {
+                    "action" : "EXCEPTION",
+                    "situation" : "MISSING"
+                },
+                {
+                    "action" : "EXCEPTION",
+                    "situation" : "FOUND_ALREADY_LINKED"
+                },
+                {
+                    "action" : "DELETE",
+                    "situation" : "UNQUALIFIED"
+                },
+                {
+                    "action" : "EXCEPTION",
+                    "situation" : "UNASSIGNED"
+                },
+                {
+                    "action" : "EXCEPTION",
+                    "situation" : "LINK_ONLY"
+                },
+                {
+                    "action" : "IGNORE",
+                    "situation" : "TARGET_IGNORED"
+                },
+                {
+                    "action" : "IGNORE",
+                    "situation" : "SOURCE_IGNORED"
+                },
+                {
+                    "action" : "IGNORE",
+                    "situation" : "ALL_GONE"
+                },
+                {
+                    "action" : "UPDATE",
+                    "situation" : "CONFIRMED"
+                },
+                {
+                    "action" : "UPDATE",
+                    "situation" : "FOUND"
+                },
+                {
+                    "action" : "CREATE",
+                    "situation" : "ABSENT"
+                }
+            ],
+            "correlationQuery" : [
+                {
+                    "linkQualifier" : "default",
+                    "expressionTree" : {
+                        "all" : [
+                            "id"
+                        ]
+                    },
+                    "mapping" : "systemBitbucketProject_managedSCMProject",
                     "type" : "text/javascript",
                     "file" : "ui/correlateTreeToQueryFilter.js"
                 }

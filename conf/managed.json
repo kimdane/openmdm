@@ -221,8 +221,7 @@
                             }
                         ],
                         "userEditable" : false,
-                        "description" : "",
-                        "returnByDefault" : false
+                        "description" : ""
                     },
                     "country" : {
                         "type" : "string",
@@ -444,7 +443,7 @@
                         "isVirtual" : true,
                         "onRetrieve" : {
                             "type" : "text/javascript",
-                             "source" : "require('roles/effectiveRoles').calculateEffectiveRoles(object, 'roles');"
+                            "source" : "require('roles/effectiveRoles').calculateEffectiveRoles(object, 'roles');"
                         },
                         "items" : {
                             "type" : "object"
@@ -1673,6 +1672,146 @@
                     "code"
                 ]
             }
-		}
+        },
+        {
+            "name" : "bitbucketProject",
+            "schema" : {
+                "$schema" : "http://forgerock.org/json-schema#",
+                "type" : "object",
+                "title" : "Bitbucket Project",
+                "description" : "",
+                "icon" : "fa-bitbucket-square",
+                "properties" : {
+                    "key" : {
+                        "description" : "",
+                        "title" : "key",
+                        "viewable" : true,
+                        "searchable" : false,
+                        "userEditable" : true,
+                        "policies" : [ ],
+                        "returnByDefault" : false,
+                        "minLength" : null,
+                        "pattern" : "",
+                        "type" : "string"
+                    },
+                    "name" : {
+                        "description" : "",
+                        "title" : "Name",
+                        "viewable" : true,
+                        "searchable" : false,
+                        "userEditable" : false,
+                        "policies" : [ ],
+                        "returnByDefault" : false,
+                        "minLength" : null,
+                        "pattern" : "",
+                        "type" : "string"
+                    },
+                    "id" : {
+                        "description" : "",
+                        "title" : "id",
+                        "viewable" : true,
+                        "searchable" : false,
+                        "userEditable" : false,
+                        "policies" : [ ],
+                        "returnByDefault" : false,
+                        "minLength" : null,
+                        "pattern" : "",
+                        "type" : "string"
+                    }
+                },
+                "required" : [
+                    "key"
+                ],
+                "order" : [
+                    "key",
+                    "name",
+                    "id"
+                ]
+            }
+        },
+        {
+            "name" : "bitbucketRepo",
+            "schema" : {
+                "$schema" : "http://forgerock.org/json-schema#",
+                "type" : "object",
+                "title" : "Bitbucket Repo",
+                "description" : "",
+                "icon" : "fa-bitbucket",
+                "properties" : {
+                    "_id" : {
+                        "description" : "",
+                        "title" : "Id",
+                        "viewable" : true,
+                        "searchable" : false,
+                        "userEditable" : false,
+                        "policies" : [ ],
+                        "returnByDefault" : false,
+                        "minLength" : null,
+                        "pattern" : "",
+                        "type" : "string"
+                    },
+                    "slug" : {
+                        "type" : "string",
+                        "title" : "slug",
+                        "viewable" : true,
+                        "userEditable" : true
+                    },
+                    "name" : {
+                        "type" : "string",
+                        "title" : "name",
+                        "viewable" : true,
+                        "userEditable" : true
+                    },
+                    "description" : {
+                        "type" : "string",
+                        "title" : "description",
+                        "viewable" : true,
+                        "userEditable" : true
+                    },
+                    "scmId" : {
+                        "type" : "string",
+                        "title" : "scmId",
+                        "viewable" : true,
+                        "userEditable" : true
+                    },
+                    "state" : {
+                        "type" : "string",
+                        "title" : "state",
+                        "viewable" : true,
+                        "userEditable" : true
+                    },
+                    "statusMessage" : {
+                        "type" : "string",
+                        "title" : "statusMessage",
+                        "viewable" : true,
+                        "userEditable" : true
+                    },
+                    "forkable" : {
+                        "type" : "boolean",
+                        "title" : "forkable",
+                        "viewable" : true,
+                        "userEditable" : true
+                    },
+                    "public" : {
+                        "type" : "boolean",
+                        "title" : "public",
+                        "viewable" : true,
+                        "userEditable" : true
+                    },
+                    "links" : {
+                        "type" : "object",
+                        "title" : "links",
+                        "viewable" : true,
+                        "userEditable" : true
+                    }
+                },
+                "required" : [
+                    "name"
+                ],
+                "order" : [
+                    "name"
+                ]
+            }
+        }
     ]
 }

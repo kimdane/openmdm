@@ -1,0 +1,214 @@
+{
+    "name" : "bitbucket",
+    "enabled" : true,
+    "connectorRef" : {
+        "connectorHostRef" : "#LOCAL",
+        "connectorName" : "org.forgerock.openicf.connectors.scriptedrest.ScriptedRESTConnector",
+        "bundleName" : "org.forgerock.openicf.connectors.groovy-connector",
+        "bundleVersion" : "[1.4.0.0,1.5.0.0)"
+    },
+    "poolConfigOption" : {
+        "maxObjects" : 25,
+        "maxIdle" : 10,
+        "maxWait" : 150000,
+        "minEvictableIdleTimeMillis" : 120000,
+        "minIdle" : 3
+    },
+    "operationTimeout" : {
+        "CREATE" : -1,
+        "UPDATE" : -1,
+        "DELETE" : -1,
+        "TEST" : -1,
+        "SCRIPT_ON_CONNECTOR" : -1,
+        "SCRIPT_ON_RESOURCE" : -1,
+        "GET" : -1,
+        "RESOLVEUSERNAME" : -1,
+        "AUTHENTICATE" : -1,
+        "SEARCH" : -1,
+        "VALIDATE" : -1,
+        "SYNC" : -1,
+        "SCHEMA" : -1
+    },
+    "resultsHandlerConfig" : {
+        "enableNormalizingResultsHandler" : false,
+        "enableFilteredResultsHandler" : false,
+        "enableCaseInsensitiveFilter" : false,
+        "enableAttributesToGetSearchResultsHandler" : false
+    },
+    "configurationProperties" : {
+        "serviceAddress" : "&{bitbucket.url}",
+        "proxyAddress" : null,
+        "username" : "&{bitbucket.user}",
+        "password" : "&{bitbucket.password}",
+        "defaultAuthMethod" : "BASIC_PREEMPTIVE",
+        "defaultRequestHeaders" : [
+            null
+        ],
+        "defaultContentType" : "application/json",
+        "scriptExtensions" : [
+            "groovy"
+        ],
+        "sourceEncoding" : "UTF-8",
+        "customizerScriptFileName" : "CustomizerScript.groovy",
+        "schemaScriptFileName" : "SchemaScript.groovy",
+        "searchScriptFileName" : "SearchScript.groovy",
+        "testScriptFileName" : "TestScript.groovy",
+        "scriptBaseClass" : null,
+        "recompileGroovySource" : true,
+        "minimumRecompilationInterval" : 500,
+        "debug" : true,
+        "verbose" : true,
+        "warningLevel" : 1,
+        "tolerance" : 10,
+        "disabledGlobalASTTransformations" : null,
+        "targetDirectory" : null,
+        "scriptRoots" : [
+            "&{launcher.project.location}/groovy/bitbucket/"
+        ]
+    },
+    "objectTypes" : {
+        "project" : {
+            "$schema" : "http://json-schema.org/draft-03/schema",
+            "id" : "project",
+            "type" : "object",
+            "nativeType" : "project",
+            "properties" : {
+                "id" : {
+                    "type" : "string",
+                    "required" : true,
+                    "nativeName" : "id",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "key" : {
+                    "type" : "string",
+                    "required" : true,
+                    "nativeName" : "__UID__",
+                    "nativeType" : "string"
+                },
+                "name" : {
+                    "type" : "string",
+                    "required" : true,
+                    "nativeName" : "__NAME__",
+                    "nativeType" : "string"
+                },
+                "description" : {
+                    "type" : "string",
+                    "nativeName" : "description",
+                    "nativeType" : "string"
+                },
+                "public" : {
+                    "type" : "boolean",
+                    "nativeName" : "public",
+                    "nativeType" : "boolean"
+                },
+                "links" : {
+                    "type" : "object",
+                    "items" : {
+                        "type" : "object",
+                        "nativeType" : "object"
+                    },
+                    "nativeType" : "object",
+                    "nativeName" : "links"
+                },
+                "type" : {
+                    "type" : "string",
+                    "nativeName" : "type",
+                    "nativeType" : "string"
+                }
+            }
+        },
+        "repo" : {
+            "$schema" : "http://json-schema.org/draft-03/schema",
+            "id" : "repo",
+            "type" : "object",
+            "nativeType" : "repo",
+            "properties" : {
+                "id" : {
+                    "type" : "string",
+                    "required" : true,
+                    "nativeName" : "id",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "name" : {
+                    "type" : "string",
+                    "required" : true,
+                    "nativeName" : "__UID__",
+                    "nativeType" : "string"
+                },
+                "description" : {
+                    "type" : "string",
+                    "nativeName" : "description",
+                    "nativeType" : "string"
+                },
+                "slug" : {
+                    "type" : "string",
+                    "nativeName" : "__NAME__",
+                    "nativeType" : "string"
+                },
+                "scmId" : {
+                    "type" : "string",
+                    "nativeName" : "scmId",
+                    "nativeType" : "string"
+                },
+                "state" : {
+                    "type" : "string",
+                    "nativeName" : "state",
+                    "nativeType" : "string"
+                },
+                "statusMessage" : {
+                    "type" : "string",
+                    "nativeName" : "statusMessage",
+                    "nativeType" : "string"
+                },
+                "forkable" : {
+                    "type" : "boolean",
+                    "nativeName" : "forkable",
+                    "nativeType" : "boolean"
+                },
+                "public" : {
+                    "type" : "boolean",
+                    "nativeName" : "public",
+                    "nativeType" : "boolean"
+                },
+                "links" : {
+                    "type" : "object",
+                    "items" : {
+                        "type" : "object",
+                        "nativeType" : "object"
+                    },
+                    "nativeType" : "object",
+                    "nativeName" : "links"
+                },
+                "type" : {
+                    "type" : "string",
+                    "nativeName" : "type",
+                    "nativeType" : "string"
+                },
+                "origin" : {
+                    "type" : "object",
+                    "items" : {
+                        "type" : "object",
+                        "nativeType" : "object"
+                    },
+                    "nativeType" : "object",
+                    "nativeName" : "origin"
+                },
+                "project" : {
+                    "type" : "object",
+                    "items" : {
+                        "type" : "object",
+                        "nativeType" : "object"
+                    },
+                    "nativeType" : "object",
+                    "nativeName" : "project"
+                }
+            }
+        }
+    }
+}
