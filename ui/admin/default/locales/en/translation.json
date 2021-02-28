@@ -590,20 +590,16 @@
             "localText" : "Localized Text",
             "emailValidationPasswordDialog" : "Configure Password Email Validation",
             "error" : "Error",
-
             "passwordSelfServiceHelp" : "Configure the end-user password reset experience.",
             "usernameSelfServiceHelp" : "Configure the end-user forgotten username retrieval experience.",
             "userRegistrationSelfServiceHelp" : "Configure the end-user registration experience.",
             "captchaNotConfigured" : "Configure or disable reCAPTCHA",
-
             "enableUserRegistration" : "Enable User Registration",
             "enablePassword" : "Enable Password Reset",
             "enableForgotUsername" : "Enable Forgotten Username Retrieval",
-
             "userRegistration" : "User Registration",
             "passwordReset" : "Password Reset",
             "forgotUsername" : "Forgotten Username Retrieval",
-
             "options" : "Options",
             "advanced" : "Advanced",
             "social" : "Social Registration Properties",
@@ -616,7 +612,6 @@
             "usernameSteps" : "Forgotten Username Steps",
             "noEmailConfig": "Outbound email is disabled.",
             "emailConfigLink": "Configure it here.",
-
             "emailValidation" : "Email Validation",
             "emailValidationDescription" : "Verify that the user has access to the email account",
             "kbaSecurityAnswerDefinitionStageTitle" : "KBA Stage",
@@ -1482,7 +1477,6 @@
                   "msg": "Uses a trusted request attribute to determine username. Designed to pair with an external auth filter."
                 }
             },
-
             "disabled": "Disabled",
             "edit": "Edit",
             "new": "New",
@@ -2798,7 +2792,6 @@
                     "maxBatchedEvents": {
                         "help": "Maximum number of events per batch-write to Elasticsearch for each Write Interval (default: 500)"
                     }
-
                 }
             },
             "json": {
