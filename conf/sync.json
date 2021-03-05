@@ -1,12 +1,117 @@
 {
     "mappings" : [
         {
+            "name" : "systemAdAccount_managedUser",
+            "source" : "system/ad/account",
+            "target" : "managed/user",
+            "correlationQuery" : {
+                "type" : "text/javascript",
+                "source" : "var query = { '_queryFilter' : 'userName eq \"' + source.sAMAccountName + '\"' }; query;"
+            },
+            "validSource" : {
+                "type" : "text/javascript",
+                "source" : "!!source.sAMAccountName && !!source.mail"
+            },
+            "onCreate" : {
+                "type" : "text/javascript",
+                "file" : "script/sync/orgStructure.js"
+            },
+            "onUpdate" : {
+                "type" : "text/javascript",
+                "file" : "script/sync/orgStructure.js"
+            },
+            "properties" : [
+                {
+                    "source" : "sAMAccountName",
+                    "target" : "userName"
+                },
+                {
+                    "source" : "givenName",
+                    "target" : "givenName"
+                },
+                {
+                    "source" : "sn",
+                    "target" : "sn"
+                },
+                {
+                    "source" : "dn",
+                    "target" : "dn"
+                },
+                {
+                    "source" : "description",
+                    "target" : "description"
+                },
+                {
+                    "source" : "ldapGroups",
+                    "target" : "ldapGroups"
+                },
+                {
+                    "target" : "mail",
+                    "source" : "mail"
+                }
+            ],
+            "policies" : [
+                {
+                    "action" : "EXCEPTION",
+                    "situation" : "AMBIGUOUS"
+                },
+                {
+                    "action" : "EXCEPTION",
+                    "situation" : "SOURCE_MISSING"
+                },
+                {
+                    "action" : "EXCEPTION",
+                    "situation" : "MISSING"
+                },
+                {
+                    "action" : "EXCEPTION",
+                    "situation" : "FOUND_ALREADY_LINKED"
+                },
+                {
+                    "action" : "DELETE",
+                    "situation" : "UNQUALIFIED"
+                },
+                {
+                    "action" : "EXCEPTION",
+                    "situation" : "UNASSIGNED"
+                },
+                {
+                    "action" : "EXCEPTION",
+                    "situation" : "LINK_ONLY"
+                },
+                {
+                    "action" : "IGNORE",
+                    "situation" : "TARGET_IGNORED"
+                },
+                {
+                    "action" : "IGNORE",
+                    "situation" : "SOURCE_IGNORED"
+                },
+                {
+                    "action" : "IGNORE",
+                    "situation" : "ALL_GONE"
+                },
+                {
+                    "action" : "UPDATE",
+                    "situation" : "CONFIRMED"
+                },
+                {
+                    "action" : "UPDATE",
+                    "situation" : "FOUND"
+                },
+                {
+                    "action" : "CREATE",
+                    "situation" : "ABSENT"
+                }
+            ]
+        },
+        {
             "name" : "systemAdGroup_managedGroup",
             "source" : "system/ad/group",
             "target" : "managed/group",
             "validSource" : {
                 "type" : "text/javascript",
-                "source" : "source.member != null && source.dn != null"
+                "source" : "source != null && source.member != null && source.dn != null"
             },
             "properties" : [
                 {
@@ -66,101 +171,6 @@
                 {
                     "situation" : "UNASSIGNED",
                     "action" : "IGNORE"
-                }
-            ]
-        },
-        {
-            "name" : "systemNameMeSQLType_managedRole",
-            "target" : "managed/role",
-            "source" : "system/namemesql/type",
-            "icon" : null,
-            "properties" : [
-                {
-                    "target" : "_id",
-                    "source" : "pos_type"
-                },
-                {
-                    "target" : "name",
-                    "source" : "pos_type",
-                    "transform" : {
-                        "type" : "text/javascript",
-                        "source" : "var map = {'F':'Fast Ansatt','J':'Innleid','I':'Innleid','M':'Midlertidig ansatt','V':'Vikar'}; map[source];"
-                    }
-                },
-                {
-                    "target" : "condition",
-                    "source" : "pos_type",
-                    "transform" : {
-                        "type" : "text/javascript",
-                        "source" : "var c ='employmentType eq \"' + source + '\"'; c;"
-                    }
-                }
-            ],
-            "policies" : [
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "AMBIGUOUS"
-                },
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "SOURCE_MISSING"
-                },
-                {
-                    "action" : "CREATE",
-                    "situation" : "MISSING"
-                },
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "FOUND_ALREADY_LINKED"
-                },
-                {
-                    "action" : "DELETE",
-                    "situation" : "UNQUALIFIED"
-                },
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "UNASSIGNED"
-                },
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "LINK_ONLY"
-                },
-                {
-                    "action" : "IGNORE",
-                    "situation" : "TARGET_IGNORED"
-                },
-                {
-                    "action" : "IGNORE",
-                    "situation" : "SOURCE_IGNORED"
-                },
-                {
-                    "action" : "IGNORE",
-                    "situation" : "ALL_GONE"
-                },
-                {
-                    "action" : "UPDATE",
-                    "situation" : "CONFIRMED"
-                },
-                {
-                    "action" : "UPDATE",
-                    "situation" : "FOUND"
-                },
-                {
-                    "action" : "CREATE",
-                    "situation" : "ABSENT"
-                }
-            ],
-            "correlationQuery" : [
-                {
-                    "linkQualifier" : "default",
-                    "expressionTree" : {
-                        "any" : [
-                            "name"
-                        ]
-                    },
-                    "mapping" : "systemNameMeSQLType_managedRole",
-                    "type" : "text/javascript",
-                    "file" : "ui/correlateTreeToQueryFilter.js"
                 }
             ]
         },
@@ -272,1351 +282,14 @@
             ]
         },
         {
-            "name" : "systemNameMeSQLDepartment_managedDepartment",
-            "target" : "managed/department",
-            "source" : "system/namemesql/department",
-            "icon" : null,
-            "properties" : [
-                {
-                    "target" : "name",
-                    "source" : "dept_description",
-                    "condition" : "/object/dept_description pr"
-                },
-                {
-                    "target" : "description",
-                    "source" : "dept_name_1",
-                    "condition" : "/object/dept_name_1 pr"
-                },
-                {
-                    "target" : "code",
-                    "source" : "department_1"
-                },
-                {
-                    "target" : "emailLists",
-                    "source" : "dept_description",
-                    "condition" : {
-                        "type" : "text/javascript",
-                        "source" : "(!!object.dept_description && openidm.query('managed/group/',{'_queryFilter':'name eq \"'+object.dept_description+'\"'}).result.length > 0)"
-                    },
-                    "transform" : {
-                        "type" : "text/javascript",
-                        "source" : "var obj = openidm.query('managed/group/',{'_queryFilter':'name eq \"'+source+'\"'}).result[0]; !!obj ? [{'_ref': 'managed/group/'+obj._id}] : [];"
-                    }
-                },
-                {
-                    "target" : "organization",
-                    "source" : "department_1",
-                    "condition" : {
-                        "type" : "text/javascript",
-                        "source" : "(!!object.department_1 && object.department_1.length === 3 && openidm.query('managed/organization/',{'_queryFilter':'org_num eq \"'+object.department_1[0]+'\"'}).result.length == 1)"
-                    },
-                    "transform" : {
-                        "type" : "text/javascript",
-                        "source" : "var obj = openidm.query('managed/organization/',{'_queryFilter':'org_num eq \"'+source[0]+'\"'}).result[0]; !!obj ? {'_ref': 'managed/organization/'+obj._id} : null;"
-                    }
-                },
-                {
-                    "target" : "last_update",
-                    "source" : "last_update"
-                }
-            ],
-            "policies" : [
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "AMBIGUOUS"
-                },
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "SOURCE_MISSING"
-                },
-                {
-                    "action" : "CREATE",
-                    "situation" : "MISSING"
-                },
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "FOUND_ALREADY_LINKED"
-                },
-                {
-                    "action" : "DELETE",
-                    "situation" : "UNQUALIFIED"
-                },
-                {
-                    "action" : "DELETE",
-                    "situation" : "UNASSIGNED"
-                },
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "LINK_ONLY"
-                },
-                {
-                    "action" : "IGNORE",
-                    "situation" : "TARGET_IGNORED"
-                },
-                {
-                    "action" : "IGNORE",
-                    "situation" : "SOURCE_IGNORED"
-                },
-                {
-                    "action" : "IGNORE",
-                    "situation" : "ALL_GONE"
-                },
-                {
-                    "action" : "UPDATE",
-                    "situation" : "CONFIRMED"
-                },
-                {
-                    "action" : "UPDATE",
-                    "situation" : "FOUND"
-                },
-                {
-                    "action" : "CREATE",
-                    "situation" : "ABSENT"
-                }
-            ],
-            "correlationQuery" : {
-                "type" : "text/javascript",
-                "source" : "var query = { '_queryFilter' : 'code eq \"' + source.department_1 + '\"' }; query;"
-            }
-        },
-        {
-            "name" : "managedDepartment_managedGroup",
-            "target" : "managed/group",
-            "source" : "managed/department",
-            "icon" : null,
-            "properties" : [
-                {
-                    "target" : "name",
-                    "source" : "name"
-                },
-                {
-                    "target" : "dn",
-                    "source" : "name",
-                    "transform" : {
-                        "type" : "text/javascript",
-                        "source" : "'CN=' + source + ',' + identityServer.getProperty('ad.groups.mail');"
-                    }
-                },
-                {
-                    "source" : "name",
-                    "target" : "sAMAccountName"
-                },
-                {
-                    "target" : "description",
-                    "source" : "description",
-                    "condition" : "/object/description pr"
-                },
-                {
-                    "target" : "groupType",
-                    "default" : -2147483646
-                }
-            ],
-            "policies" : [
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "AMBIGUOUS"
-                },
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "SOURCE_MISSING"
-                },
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "MISSING"
-                },
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "FOUND_ALREADY_LINKED"
-                },
-                {
-                    "action" : "DELETE",
-                    "situation" : "UNQUALIFIED"
-                },
-                {
-                    "action" : "IGNORE",
-                    "situation" : "UNASSIGNED"
-                },
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "LINK_ONLY"
-                },
-                {
-                    "action" : "IGNORE",
-                    "situation" : "TARGET_IGNORED"
-                },
-                {
-                    "action" : "IGNORE",
-                    "situation" : "SOURCE_IGNORED"
-                },
-                {
-                    "action" : "IGNORE",
-                    "situation" : "ALL_GONE"
-                },
-                {
-                    "action" : "UPDATE",
-                    "situation" : "CONFIRMED"
-                },
-                {
-                    "action" : "UPDATE",
-                    "situation" : "FOUND"
-                },
-                {
-                    "action" : "CREATE",
-                    "situation" : "ABSENT"
-                }
-            ],
-            "correlationQuery" : [
-                {
-                    "linkQualifier" : "default",
-                    "expressionTree" : {
-                        "all" : [
-                            "name"
-                        ]
-                    },
-                    "mapping" : "managedDepartment_managedGroup",
-                    "type" : "text/javascript",
-                    "file" : "ui/correlateTreeToQueryFilter.js"
-                }
-            ]
-        },
-        {
-            "name" : "managedGroup_systemAdGroup",
-            "target" : "system/ad/group",
-            "source" : "managed/group",
-            "icon" : null,
-            "validSource" : {
-                "type" : "text/javascript",
-                "source" : "source.name != null && source.name.length > 0;"
-            },
-            "onCreate" : {
-                "type" : "text/javascript",
-                "source" : "if(!!source.groupType) { target.groupType = source.groupType;}"
-            },
-            "properties" : [
-                {
-                    "target" : "dn",
-                    "source" : "dn"
-                },
-                {
-                    "target" : "description",
-                    "source" : "description"
-                },
-                {
-                    "target" : "cn",
-                    "source" : "name"
-                },
-                {
-                    "source" : "sAMAccountName",
-                    "target" : "sAMAccountName"
-                },
-                {
-                    "target" : "member",
-                    "source" : "member"
-                }
-            ],
-            "policies" : [
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "AMBIGUOUS"
-                },
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "SOURCE_MISSING"
-                },
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "MISSING"
-                },
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "FOUND_ALREADY_LINKED"
-                },
-                {
-                    "action" : "DELETE",
-                    "situation" : "UNQUALIFIED"
-                },
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "UNASSIGNED"
-                },
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "LINK_ONLY"
-                },
-                {
-                    "action" : "IGNORE",
-                    "situation" : "TARGET_IGNORED"
-                },
-                {
-                    "action" : "IGNORE",
-                    "situation" : "SOURCE_IGNORED"
-                },
-                {
-                    "action" : "IGNORE",
-                    "situation" : "ALL_GONE"
-                },
-                {
-                    "action" : "UPDATE",
-                    "situation" : "CONFIRMED"
-                },
-                {
-                    "action" : "UPDATE",
-                    "situation" : "FOUND"
-                },
-                {
-                    "action" : "CREATE",
-                    "situation" : "ABSENT"
-                }
-            ],
-            "links" : "systemAdGroup_managedGroup",
-            "correlationQuery" : [
-                {
-                    "linkQualifier" : "default",
-                    "expressionTree" : {
-                        "any" : [
-                            "dn"
-                        ]
-                    },
-                    "mapping" : "managedGroup_systemAdGroup",
-                    "type" : "text/javascript",
-                    "file" : "ui/correlateTreeToQueryFilter.js"
-                }
-            ]
-        },
-        {
-            "name" : "systemNameMeSQLAccount_managedUser",
-            "source" : "system/namemesql/account",
-            "target" : "managed/user",
-            "validSource" : {
-                "type" : "text/javascript",
-                "source" : "!!source.short_name"
-            },
-            "correlationQuery" : {
-                "type" : "text/javascript",
-                "source" : "var query = { '_queryFilter' : 'resourceId eq \"' + source.resource_id + '\"' }; query;"
-            },
-            "onCreate" : {
-                "type" : "text/javascript",
-                "source" : "target.accountStatus = 'inactive';"
-            },
-            "properties" : [
-                {
-                    "source" : "short_name",
-                    "target" : "userName",
-                    "condition" : "/object/short_name pr",
-                    "transform" : {
-                        "type" : "text/javascript",
-                        "source" : "source.trim().toLowerCase()"
-                    }
-                },
-                {
-                    "source" : "resource_id",
-                    "target" : "resourceId"
-                },
-                {
-                    "source" : "last_update",
-                    "target" : "dbLastUpdate"
-                },
-                {
-                    "source" : "first_name",
-                    "target" : "givenName",
-                    "condition" : "/object/first_name pr",
-                    "transform" : {
-                        "type" : "text/javascript",
-                        "source" : "source.trim()"
-                    }
-                },
-                {
-                    "source" : "surname",
-                    "target" : "sn",
-                    "condition" : "/object/surname pr",
-                    "transform" : {
-                        "type" : "text/javascript",
-                        "source" : "source.trim()"
-                    }
-                },
-                {
-                    "source" : "short_name",
-                    "target" : "mail",
-                    "condition" : "/object/short_name pr",
-                    "transform" : {
-                        "type" : "text/javascript",
-                        "source" : "source.trim().toLowerCase() + '@' + identityServer.getProperty('mail.domain')"
-                    }
-                },
-                {
-                    "source" : "department_1",
-                    "target" : "divisionName",
-                    "condition" : {
-                        "type" : "text/javascript",
-                        "source" : "(!!object.department_1 && object.department_1.length === 3 && openidm.query('managed/organization', {'_queryFilter':'org_num eq \"'+object.department_1[0]+'\"'}).result.length == 1)"
-                    },
-                    "transform" : {
-                        "type" : "text/javascript",
-                        "source" : "openidm.query('managed/organization', {'_queryFilter':'org_num eq \"'+source[0]+'\"'}).result[0].name"
-                    }
-                },
-                {
-                    "source" : "department_1",
-                    "target" : "departmentCode",
-                    "condition" : {
-                        "type" : "text/javascript",
-                        "source" : "(!!object.department_1 && object.department_1.length === 3 && openidm.query('managed/department', {'_queryFilter':'code eq \"'+object.department_1+'\"'}).result.length == 1 && !!openidm.query('managed/department', {'_queryFilter':'code eq \"'+object.department_1+'\"'}).result[0].name)"
-                    },
-                    "transform" : {
-                        "type" : "text/javascript",
-                        "source" : "openidm.query('managed/department', {'_queryFilter':'code eq \"'+source+'\"'}).result[0].name;"
-                    }
-                },
-                {
-                    "source" : "pos_type",
-                    "condition" : "/object/pos_type pr",
-                    "target" : "employmentTypeName",
-                    "transform" : {
-                        "type" : "text/javascript",
-                        "source" : "var r={'I':'Innleid','J':'Innleid','M':'Midlertidig ansatt','F':'Fast ansatt','V':'Vikar'}; r[source];"
-                    }
-                },
-                {
-                    "source" : "status",
-                    "condition" : "/object/status pr",
-                    "target" : "status"
-                },
-                {
-                    "source" : "date_from",
-                    "condition" : "/object/date_from pr",
-                    "target" : "startDate"
-                },
-                {
-                    "source" : "post_date_from",
-                    "condition" : "/object/post_date_from pr",
-                    "target" : "post_date_from"
-                },
-                {
-                    "source" : "date_to",
-                    "condition" : "/object/date_to pr",
-                    "target" : "endDate"
-                },
-                {
-                    "source" : "resource_typ",
-                    "target" : "resourceType"
-                },
-                {
-                    "source" : "pos_type",
-                    "target" : "employmentType"
-                },
-                {
-                    "source" : "pos_type_next",
-                    "target" : "nextEmploymentType",
-                    "condition" : "/object/pos_type_next pr"
-                },
-                {
-                    "source" : "post_name",
-                    "target" : "title",
-                    "condition" : "/object/post_name pr"
-                },
-                {
-                    "source" : "post_name_next",
-                    "target" : "title",
-                    "condition" : "!(/object/post_name pr) AND /object/post_name_next pr"
-                },
-                {
-                    "source" : "expired_date",
-                    "condition" : "/object/expired_date pr",
-                    "target" : "probationEndDate"
-                },
-                {
-                    "source" : "permcode",
-                    "target" : "leaveCode"
-                },
-                {
-                    "source" : "permavt",
-                    "target" : "leaveAgreement"
-                },
-                {
-                    "source" : "perm_date_from",
-                    "condition" : "/object/perm_date_from pr",
-                    "target" : "leaveStartDate"
-                },
-                {
-                    "source" : "perm_date_to",
-                    "condition" : "/object/perm_date_to pr",
-                    "target" : "leaveEndDate"
-                },
-                {
-                    "source" : "superior",
-                    "target" : "manager",
-                    "condition" : {
-                        "type" : "text/javascript",
-                        "source" : "(!!object.superior && openidm.query('managed/user/',{'_queryFilter':'resourceId eq \"' + object.superior + '\"'}).result.length == 1)"
-                    },
-                    "transform" : {
-                        "type" : "text/javascript",
-                        "source" : "var obj = openidm.query('managed/user/',{'_queryFilter':'resourceId eq \"' + source + '\"'}).result[0]; obj ? {'_ref': 'managed/user/' + obj._id} : null;"
-                    }
-                },
-                {
-                    "source" : "superior_next",
-                    "target" : "manager",
-                    "condition" : {
-                        "type" : "text/javascript",
-                        "source" : "(!object.superior && !!object.superior_next && openidm.query('managed/user/',{'_queryFilter':'resourceId eq \"' + object.superior_next + '\"'}).result.length == 1)"
-                    },
-                    "transform" : {
-                        "type" : "text/javascript",
-                        "source" : "var obj = openidm.query('managed/user/',{'_queryFilter':'resourceId eq \"' + source + '\"'}).result[0]; obj ? {'_ref': 'managed/user/' + obj._id} : null;"
-                    }
-                },
-                {
-                    "source" : "superior",
-                    "target" : "managerId",
-                    "condition" : "/object/superior pr"
-                },
-                {
-                    "source" : "superior_next",
-                    "target" : "managerId",
-                    "condition" : "!(/object/superior pr) AND /object/superior_next pr"
-                },
-                {
-                    "source" : "superior_name",
-                    "target" : "managerName",
-                    "comment" : "Ikke sette leder for adm dir. Adm dir har post_id 9000",
-                    "condition" : "/object/superior_name pr AND !(/object/post_id eq \"9000\")",
-                    "transform" : {
-                        "type" : "text/javascript",
-                        "source" : "source.split(', ').reverse().join(' ');"
-                    }
-                },
-                {
-                    "source" : "superior_next_name",
-                    "target" : "managerName",
-                    "comment" : "Ikke sette leder for adm dir. Adm dir har post_id 9000",
-                    "condition" : "/object/superior_next_name pr AND !(/object/superior_name pr) AND !(/object/post_id eq \"9000\")",
-                    "transform" : {
-                        "type" : "text/javascript",
-                        "source" : "source.split(', ').reverse().join(' ');"
-                    }
-                },
-                {
-                    "source" : "department_1",
-                    "target" : "departmentId",
-                    "condition" : "/object/department_1 pr"
-                },
-                {
-                    "source" : "department_next_1",
-                    "target" : "departmentId",
-                    "condition" : "!(/object/department_1 pr) AND /object/department_next_1 pr"
-                },
-                {
-                    "source" : "department_2",
-                    "target" : "secondDepartmentId"
-                },
-                {
-                    "source" : "department_3",
-                    "target" : "thirdDepartmentId"
-                },
-                {
-                    "source" : "department_4",
-                    "target" : "fourthDepartmentId"
-                },
-                {
-                    "source" : "department_next_1",
-                    "target" : "nextDepartmentId"
-                },
-                {
-                    "source" : "dept_name_1",
-                    "target" : "departmentName",
-                    "condition" : "/object/dept_name_1 pr"
-                },
-                {
-                    "source" : "dept_name_next_1",
-                    "target" : "departmentName",
-                    "condition" : "!(/object/dept_name_1 pr) AND /object/dept_name_next_1 pr"
-                },
-                {
-                    "source" : "dept_name_2",
-                    "target" : "secondDepartmentName"
-                },
-                {
-                    "source" : "dept_name_3",
-                    "target" : "thirdDepartmentName"
-                },
-                {
-                    "source" : "dept_name_4",
-                    "target" : "fourthDepartmentName"
-                },
-                {
-                    "source" : "dept_name_next_1",
-                    "target" : "nextDepartmentName"
-                },
-                {
-                    "source" : "parttime_pct_pos",
-                    "target" : "departmentPercentage"
-                },
-                {
-                    "source" : "parttime_pct_2",
-                    "target" : "secondDepartmentPercentage"
-                },
-                {
-                    "source" : "parttime_pct_3",
-                    "target" : "thirdDepartmentPercentage"
-                },
-                {
-                    "source" : "parttime_pct_4",
-                    "target" : "fourthDepartmentPercentage"
-                },
-                {
-                    "source" : "parttime_pct_pos",
-                    "target" : "parttime_pct_pos",
-                    "condition" : "/object/parttime_pct_pos pr"
-                },
-                {
-                    "source" : "parttime_pct_pos_next",
-                    "target" : "parttime_pct_pos",
-                    "condition" : "!(/object/parttime_pct_pos pr) AND /object/parttime_pct_pos_next pr"
-                },
-                {
-                    "source" : "exit_reason",
-                    "condition" : "/object/exit_reason pr",
-                    "target" : "exit_reason"
-                },
-                {
-                    "source" : "post_id",
-                    "target" : "post_id"
-                }
-            ],
-            "policies" : [
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "AMBIGUOUS"
-                },
-                {
-                    "action" : "DELETE",
-                    "situation" : "SOURCE_MISSING"
-                },
-                {
-                    "action" : "CREATE",
-                    "situation" : "MISSING"
-                },
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "FOUND_ALREADY_LINKED"
-                },
-                {
-                    "action" : "IGNORE",
-                    "situation" : "UNQUALIFIED"
-                },
-                {
-                    "action" : "IGNORE",
-                    "situation" : "UNASSIGNED"
-                },
-                {
-                    "action" : "UNLINK",
-                    "situation" : "LINK_ONLY"
-                },
-                {
-                    "action" : "IGNORE",
-                    "situation" : "TARGET_IGNORED"
-                },
-                {
-                    "action" : "IGNORE",
-                    "situation" : "SOURCE_IGNORED"
-                },
-                {
-                    "action" : "IGNORE",
-                    "situation" : "ALL_GONE"
-                },
-                {
-                    "action" : "UPDATE",
-                    "situation" : "CONFIRMED"
-                },
-                {
-                    "action" : "UPDATE",
-                    "situation" : "FOUND"
-                },
-                {
-                    "action" : "CREATE",
-                    "situation" : "ABSENT"
-                }
-            ]
-        },
-        {
-            "name" : "systemAdAccount_managedUser",
-            "source" : "system/ad/account",
-            "target" : "managed/user",
-            "correlationQuery" : {
-                "type" : "text/javascript",
-                "source" : "var query = { '_queryFilter' : 'userName eq \"' + source.sAMAccountName + '\"' }; query;"
-            },
-            "validSource" : {
-                "type" : "text/javascript",
-                "source" : "!!source.sAMAccountName"
-            },
-            "properties" : [
-                {
-                    "source" : "sAMAccountName",
-                    "condition" : {
-                        "type" : "text/javascript",
-                        "source" : "false"
-                    },
-                    "target" : "userName"
-                },
-                {
-                    "source" : "givenName",
-                    "target" : "givenName"
-                },
-                {
-                    "source" : "sn",
-                    "target" : "sn"
-                },
-                {
-                    "source" : "description",
-                    "target" : "description"
-                },
-                {
-                    "source" : "ldapGroups",
-                    "target" : "ldapGroups"
-                },
-                {
-                    "target" : "dn",
-                    "source" : "dn"
-                },
-                {
-                    "target" : "mail",
-                    "source" : "mail"
-                }
-            ],
-            "policies" : [
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "AMBIGUOUS"
-                },
-                {
-                    "action" : "DELETE",
-                    "situation" : "SOURCE_MISSING"
-                },
-                {
-                    "action" : "REPORT",
-                    "situation" : "MISSING"
-                },
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "FOUND_ALREADY_LINKED"
-                },
-                {
-                    "action" : "IGNORE",
-                    "situation" : "UNQUALIFIED"
-                },
-                {
-                    "action" : "IGNORE",
-                    "situation" : "UNASSIGNED"
-                },
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "LINK_ONLY"
-                },
-                {
-                    "action" : "IGNORE",
-                    "situation" : "TARGET_IGNORED"
-                },
-                {
-                    "action" : "IGNORE",
-                    "situation" : "SOURCE_IGNORED"
-                },
-                {
-                    "action" : "IGNORE",
-                    "situation" : "ALL_GONE"
-                },
-                {
-                    "action" : "UPDATE",
-                    "situation" : "CONFIRMED"
-                },
-                {
-                    "action" : "UPDATE",
-                    "situation" : "FOUND"
-                },
-                {
-                    "action" : "IGNORE",
-                    "situation" : "ABSENT"
-                }
-            ]
-        },
-        {
-            "name" : "managedUser_systemAdAccount",
-            "source" : "managed/user",
-            "target" : "system/ad/account",
-            "links" : "systemAdAccount_managedUser",
-            "correlationQuery" : {
-                "type" : "text/javascript",
-                "source" : "({ '_queryFilter' : 'sAMAccountName eq \"' + source.userName + '\"' })"
-            },
-            "sourceQuery" : {
-                "_queryFilter" : "accountStatus eq \"active\""
-            },
-            "properties" : [
-                {
-                    "source" : "resourceId",
-                    "target" : "employeeID"
-                },
-                {
-                    "source" : "givenName",
-                    "target" : "givenName"
-                },
-                {
-                    "source" : "sn",
-                    "target" : "sn"
-                },
-                {
-                    "source" : "workPlaceName",
-                    "target" : "physicalDeliveryOfficeName",
-                    "condition" : {
-                        "type" : "text/javascript",
-                        "source" : "!!object.workPlaceName"
-                    }
-                },
-                {
-                    "source" : "manager",
-                    "target" : "manager",
-                    "condition" : {
-                        "type" : "text/javascript",
-                        "source" : "!!object.manager"
-                    }
-                },
-                {
-                    "source" : "mail",
-                    "target" : "userPrincipalName"
-                },
-                {
-                    "source" : "",
-                    "transform" : {
-                        "type" : "text/javascript",
-                        "source" : "source.displayName || (source.givenName + ' ' + source.sn);"
-                    },
-                    "target" : "cn"
-                },
-                {
-                    "source" : "userName",
-                    "target" : "sAMAccountName"
-                },
-                {
-                    "source" : "description",
-                    "target" : "description",
-                    "condition" : {
-                        "type" : "text/javascript",
-                        "source" : "!!object.description"
-                    }
-                },
-                {
-                    "source" : "mail",
-                    "target" : "mail"
-                },
-                {
-                    "source" : "ldapGroups",
-                    "target" : "ldapGroups"
-                },
-                {
-                    "source" : "",
-                    "target" : "displayName",
-                    "transform" : {
-                        "type" : "text/javascript",
-                        "source" : "source.givenName + ' ' + source.sn;"
-                    }
-                },
-                {
-                    "source" : "mobile",
-                    "target" : "mobile",
-                    "condition" : {
-                        "type" : "text/javascript",
-                        "source" : "!!object.mobile"
-                    }
-                },
-                {
-                    "source" : "title",
-                    "target" : "title",
-                    "condition" : {
-                        "type" : "text/javascript",
-                        "source" : "!!object.title"
-                    }
-                },
-                {
-                    "source" : "telephoneNumber",
-                    "target" : "telephoneNumber",
-                    "condition" : {
-                        "type" : "text/javascript",
-                        "source" : "!!object.telephoneNumber"
-                    }
-                }
-            ],
-            "onCreate" : {
-                "type" : "text/javascript",
-                "source" : "target.dn = 'CN=' + (source.displayName || (source.givenName + ' ' + source.sn)) + ',' + identityServer.getProperty('ad.users');"
-            },
-            "policies" : [
-                {
-                    "situation" : "CONFIRMED",
-                    "action" : "IGNORE"
-                },
-                {
-                    "situation" : "FOUND",
-                    "action" : "IGNORE"
-                },
-                {
-                    "situation" : "ABSENT",
-                    "action" : "REPORT"
-                },
-                {
-                    "situation" : "AMBIGUOUS",
-                    "action" : "IGNORE"
-                },
-                {
-                    "situation" : "MISSING",
-                    "action" : "IGNORE"
-                },
-                {
-                    "situation" : "SOURCE_MISSING",
-                    "action" : "REPORT"
-                },
-                {
-                    "situation" : "UNQUALIFIED",
-                    "action" : "IGNORE"
-                },
-                {
-                    "situation" : "UNASSIGNED",
-                    "action" : "IGNORE"
-                }
-            ]
-        },
-        {
-            "name" : "systemNameMeCRESTUser_managedUser",
-            "source" : "system/namemecrest/user",
-            "target" : "managed/user",
-            "enableSync" : true,
-            "correlationQuery" : {
-                "type" : "text/javascript",
-                "source" : "var query = { '_queryId' : 'for-resourceId', 'resourceId' : source.resourceId }; query;"
-            },
-            "properties" : [
-                {
-                    "source" : "userName",
-                    "target" : "userName"
-                },
-                {
-                    "source" : "resourceId",
-                    "target" : "resourceId"
-                },
-                {
-                    "source" : "flags",
-                    "condition" : "/object/flags pr",
-                    "target" : "flags"
-                },
-                {
-                    "source" : "dbLastUpdate",
-                    "target" : "dbLastUpdate"
-                },
-                {
-                    "source" : "givenName",
-                    "target" : "givenName"
-                },
-                {
-                    "source" : "sn",
-                    "target" : "sn"
-                },
-                {
-                    "source" : "mail",
-                    "target" : "mail"
-                },
-                {
-                    "source" : "departmentCode",
-                    "target" : "departmentCode"
-                },
-                {
-                    "source" : "divisionName",
-                    "target" : "divisionName"
-                },
-                {
-                    "source" : "employmentTypeName",
-                    "target" : "employmentTypeName"
-                },
-                {
-                    "source" : "status",
-                    "target" : "status"
-                },
-                {
-                    "source" : "startDate",
-                    "target" : "startDate"
-                },
-                {
-                    "source" : "post_date_from",
-                    "target" : "post_date_from"
-                },
-                {
-                    "source" : "endDate",
-                    "target" : "endDate"
-                },
-                {
-                    "source" : "resourceType",
-                    "target" : "resourceType"
-                },
-                {
-                    "source" : "employmentType",
-                    "target" : "employmentType"
-                },
-                {
-                    "source" : "title",
-                    "target" : "title"
-                },
-                {
-                    "source" : "probationEndDate",
-                    "target" : "probationEndDate"
-                },
-                {
-                    "source" : "leaveCode",
-                    "target" : "leaveCode"
-                },
-                {
-                    "source" : "leaveAgreement",
-                    "target" : "leaveAgreement"
-                },
-                {
-                    "source" : "managerId",
-                    "target" : "managerId"
-                },
-                {
-                    "source" : "managerName",
-                    "target" : "managerName"
-                },
-                {
-                    "source" : "departmentId",
-                    "target" : "departmentId"
-                },
-                {
-                    "source" : "secondDepartmentId",
-                    "target" : "secondDepartmentId"
-                },
-                {
-                    "source" : "thirdDepartmentId",
-                    "target" : "thirdDepartmentId"
-                },
-                {
-                    "source" : "fourthDepartmentId",
-                    "target" : "fourthDepartmentId"
-                },
-                {
-                    "source" : "nextDepartmentId",
-                    "target" : "nextDepartmentId"
-                },
-                {
-                    "source" : "departmentName",
-                    "target" : "departmentName"
-                },
-                {
-                    "source" : "secondDepartmentName",
-                    "target" : "secondDepartmentName"
-                },
-                {
-                    "source" : "thirdDepartmentName",
-                    "target" : "thirdDepartmentName"
-                },
-                {
-                    "source" : "fourthDepartmentName",
-                    "target" : "fourthDepartmentName"
-                },
-                {
-                    "source" : "nextDepartmentName",
-                    "target" : "nextDepartmentName"
-                },
-                {
-                    "source" : "departmentPercentage",
-                    "target" : "departmentPercentage"
-                },
-                {
-                    "source" : "secondDepartmentPercentage",
-                    "target" : "secondDepartmentPercentage"
-                },
-                {
-                    "source" : "thirdDepartmentPercentage",
-                    "target" : "thirdDepartmentPercentage"
-                },
-                {
-                    "source" : "fourthDepartmentPercentage",
-                    "target" : "fourthDepartmentPercentage"
-                },
-                {
-                    "source" : "exit_reason",
-                    "target" : "exit_reason"
-                },
-                {
-                    "source" : "post_id",
-                    "target" : "post_id"
-                },
-                {
-                    "source" : "accountStatus",
-                    "target" : "accountStatus"
-                },
-                {
-                    "source" : "mobile",
-                    "target" : "mobile"
-                },
-                {
-                    "source" : "managerId",
-                    "target" : "manager",
-                    "condition" : {
-                        "type" : "text/javascript",
-                        "source" : "(!!object.managerId && openidm.query('managed/user/',{'_queryFilter':'resourceId eq \"' + object.managerId + '\"'}).result.length == 1)"
-                    },
-                    "transform" : {
-                        "type" : "text/javascript",
-                        "source" : "var obj = openidm.query('managed/user/',{'_queryFilter':'resourceId eq \"' + source + '\"'}).result[0]; obj ? {'_ref': 'managed/user/' + obj._id} : null;"
-                    }
-                },
-                {
-                    "source" : "telephoneNumber",
-                    "target" : "telephoneNumber"
-                },
-                {
-                    "source" : "sync",
-                    "target" : "sync"
-                },
-                {
-                    "source" : "caId",
-                    "target" : "caId"
-                },
-                {
-                    "source" : "sunset",
-                    "target" : "sunset"
-                },
-                {
-                    "source" : "beforeProbation",
-                    "target" : "beforeProbation"
-                },
-                {
-                    "source" : "sunrise",
-                    "target" : "sunrise"
-                }
-            ],
-            "policies" : [
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "AMBIGUOUS"
-                },
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "SOURCE_MISSING"
-                },
-                {
-                    "action" : "CREATE",
-                    "situation" : "MISSING"
-                },
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "FOUND_ALREADY_LINKED"
-                },
-                {
-                    "action" : "REPORT",
-                    "situation" : "UNQUALIFIED"
-                },
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "UNASSIGNED"
-                },
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "LINK_ONLY"
-                },
-                {
-                    "action" : "IGNORE",
-                    "situation" : "TARGET_IGNORED"
-                },
-                {
-                    "action" : "IGNORE",
-                    "situation" : "SOURCE_IGNORED"
-                },
-                {
-                    "action" : "IGNORE",
-                    "situation" : "ALL_GONE"
-                },
-                {
-                    "action" : "UPDATE",
-                    "situation" : "CONFIRMED"
-                },
-                {
-                    "action" : "UPDATE",
-                    "situation" : "FOUND"
-                },
-                {
-                    "action" : "CREATE",
-                    "situation" : "ABSENT"
-                }
-            ]
-        },
-        {
-            "name" : "managedUser_systemNameMeRESTContact-persons",
-            "target" : "system/namemerest/contact-persons",
-            "source" : "managed/user",
-            "icon" : null,
-            "validSource" : {
-                "type" : "text/javascript",
-                "source" : "source.accountStatus == 'active' && (!source.sync || source.sync != false);"
-            },
-            "properties" : [
-                {
-                    "target" : "givenName",
-                    "source" : "givenName"
-                },
-                {
-                    "target" : "sn",
-                    "source" : "sn"
-                },
-                {
-                    "target" : "dbLastUpdate",
-                    "source" : "dbLastUpdate"
-                },
-                {
-                    "target" : "userName",
-                    "source" : "userName"
-                },
-                {
-                    "target" : "resourceId",
-                    "source" : "resourceId"
-                },
-                {
-                    "target" : "title",
-                    "source" : "title"
-                },
-                {
-                    "target" : "post_id",
-                    "source" : "post_id"
-                },
-                {
-                    "target" : "departmentId",
-                    "source" : "departmentId"
-                },
-                {
-                    "target" : "departmentName",
-                    "source" : "departmentName"
-                },
-                {
-                    "target" : "departmentCode",
-                    "source" : "departmentCode"
-                },
-                {
-                    "target" : "divisionName",
-                    "source" : "divisionName"
-                },
-                {
-                    "target" : "employmentTypeName",
-                    "source" : "employmentTypeName"
-                },
-                {
-                    "target" : "resourceType",
-                    "source" : "resourceType"
-                },
-                {
-                    "target" : "employmentType",
-                    "source" : "employmentType"
-                },
-                {
-                    "target" : "startDate",
-                    "source" : "startDate"
-                },
-                {
-                    "target" : "endDate",
-                    "source" : "endDate"
-                },
-                {
-                    "target" : "post_date_from",
-                    "source" : "post_date_from"
-                },
-                {
-                    "target" : "mobile",
-                    "source" : "mobile"
-                },
-                {
-                    "target" : "telephoneNumber",
-                    "source" : "telephoneNumber"
-                },
-                {
-                    "target" : "mail",
-                    "source" : "mail"
-                },
-                {
-                    "target" : "id",
-                    "source" : "_id"
-                }
-            ],
-            "policies" : [
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "AMBIGUOUS"
-                },
-                {
-                    "action" : "DELETE",
-                    "situation" : "SOURCE_MISSING"
-                },
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "MISSING"
-                },
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "FOUND_ALREADY_LINKED"
-                },
-                {
-                    "action" : "DELETE",
-                    "situation" : "UNQUALIFIED"
-                },
-                {
-                    "action" : "REPORT",
-                    "situation" : "UNASSIGNED"
-                },
-                {
-                    "action" : "EXCEPTION",
-                    "situation" : "LINK_ONLY"
-                },
-                {
-                    "action" : "IGNORE",
-                    "situation" : "TARGET_IGNORED"
-                },
-                {
-                    "action" : "IGNORE",
-                    "situation" : "SOURCE_IGNORED"
-                },
-                {
-                    "action" : "IGNORE",
-                    "situation" : "ALL_GONE"
-                },
-                {
-                    "action" : "UPDATE",
-                    "situation" : "CONFIRMED"
-                },
-                {
-                    "action" : "UPDATE",
-                    "situation" : "FOUND"
-                },
-                {
-                    "action" : "CREATE",
-                    "situation" : "ABSENT"
-                }
-            ],
-            "correlationQuery" : [
-                {
-                    "linkQualifier" : "default",
-                    "expressionTree" : {
-                        "any" : [
-                            "id"
-                        ]
-                    },
-                    "mapping" : "managedUser_systemNameMeRESTContact-persons",
-                    "type" : "text/javascript",
-                    "file" : "ui/correlateTreeToQueryFilter.js"
-                }
-            ]
-        },
-        {
             "target" : "managed/scmProject",
             "source" : "system/bitbucket/project",
             "name" : "systemBitbucketProject_managedSCMProject",
             "properties" : [
+                {
+                    "target" : "_id",
+                    "source" : "key"
+                },
                 {
                     "target" : "id",
                     "source" : "id"
@@ -1627,18 +300,26 @@
                 },
                 {
                     "target" : "name",
-                    "source" : "name"
+                    "source" : "name",
+                    "condition" : "/object/name pr"
+                },
+                {
+                    "target" : "description",
+                    "condition" : "/object/description pr",
+                    "source" : "description"
                 },
                 {
                     "target" : "type",
                     "source" : "type"
                 },
                 {
-                    "target" : "links",
-                    "source" : "links"
+                    "target" : "permissions",
+                    "condition" : "/object/permissions pr",
+                    "source" : "permissions"
                 },
                 {
                     "target" : "public",
+                    "default" : "false",
                     "source" : "public"
                 }
             ],
@@ -1712,9 +393,17 @@
             ]
         },
         {
-            "target" : "managed/scmRepo",
             "source" : "system/bitbucket/repo",
-            "name" : "systemBitbucketProject_managedSCMRepo",
+            "target" : "managed/scmRepo",
+            "name" : "systemBitbucketRepo_managedSCMRepo",
+            "onCreate" : {
+                "type" : "text/javascript",
+                "file" : "script/sync/scmStructure.js"
+            },
+            "onUpdate" : {
+                "type" : "text/javascript",
+                "file" : "script/sync/scmStructure.js"
+            },
             "properties" : [
                 {
                     "target" : "id",
@@ -1730,7 +419,9 @@
                 },
                 {
                     "target" : "description",
-                    "source" : "description"
+                    "source" : "description",
+                    "condition" : "/object/description pr"
+
                 },
                 {
                     "target" : "scmId",
@@ -1749,11 +440,26 @@
                     "source" : "forkable"
                 },
                 {
+                    "target" : "permissions",
+                    "condition" : "/object/permissions pr",
+                    "source" : "permissions"
+                },
+                {
                     "target" : "links",
                     "source" : "links"
                 },
                 {
+                    "source" : "project",
+                    "target" : "project",
+                    "condition" : "/object/project pr",
+                    "transform" : {
+                        "type" : "text/javascript",
+                        "source" : "var obj = {'_ref': 'managed/scmProject/' + source.key}; obj;"
+                    }
+                },
+                {
                     "target" : "public",
+                    "default" : "false",
                     "source" : "public"
                 }
             ],

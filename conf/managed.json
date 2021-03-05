@@ -38,6 +38,7 @@
                     "password",
                     "givenName",
                     "sn",
+                    "division",
                     "mail",
                     "accountStatus",
                     "telephoneNumber",
@@ -157,6 +158,13 @@
                         "searchable" : true,
                         "userEditable" : true
                     },
+                    "dn" : {
+                        "title" : "AD Distinguished Name",
+                        "viewable" : true,
+                        "type" : "string",
+                        "searchable" : true,
+                        "userEditable" : true
+                    },
                     "address2" : {
                         "type" : "string",
                         "title" : "Address 2",
@@ -176,15 +184,17 @@
                         "viewable" : true,
                         "userEditable" : true
                     },
-                    "workPlace" : {
+                    "department" : {
                         "type" : "relationship",
                         "validate" : false,
                         "reverseRelationship" : true,
-                        "reversePropertyName" : "users",
-                        "title" : "WorkPlace",
+                        "reversePropertyName" : "employees",
+                        "title" : "Department",
                         "viewable" : true,
+                        "policies" : [ ],
+                        "minLength" : null,
                         "searchable" : true,
-                        "returnByDefault" : true,
+                        "returnByDefault" : false,
                         "usageDescription" : "",
                         "isPersonal" : false,
                         "properties" : {
@@ -195,7 +205,7 @@
                             "_refProperties" : {
                                 "description" : "Supports metadata within the relationship",
                                 "type" : "object",
-                                "title" : "WorkPlace _refProperties",
+                                "title" : "Dept _refProperties",
                                 "properties" : {
                                     "_id" : {
                                         "description" : "_refProperties object ID",
@@ -208,13 +218,13 @@
                         },
                         "resourceCollection" : [
                             {
-                                "path" : "managed/entity",
-                                "label" : "Entity",
+                                "path" : "managed/department",
+                                "label" : "Department",
                                 "query" : {
                                     "queryFilter" : "true",
                                     "fields" : [
-                                        "name",
-                                        "description"
+                                        "code",
+                                        "name"
                                     ],
                                     "sortKeys" : [ ]
                                 }
@@ -222,6 +232,110 @@
                         ],
                         "userEditable" : false,
                         "description" : ""
+                    },
+                    "sector" : {
+                        "type" : ["relationship","null"],
+                        "validate" : false,
+                        "reverseRelationship" : true,
+                        "reversePropertyName" : "employees",
+                        "title" : "Sector",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "policies" : [ ],
+                        "minLength" : null,
+                        "returnByDefault" : false,
+                        "usageDescription" : "",
+                        "isPersonal" : false,
+                        "properties" : {
+                            "_ref" : {
+                                "description" : "References a relationship from a managed object",
+                                "type" : "string"
+                            },
+                            "_refProperties" : {
+                                "description" : "Supports metadata within the relationship",
+                                "type" : "object",
+                                "title" : "Sector",
+                                "properties" : {
+                                    "_id" : {
+                                        "description" : "_refProperties object ID",
+                                        "type" : "string",
+                                        "required" : false,
+                                        "propName" : "_id"
+                                    }
+                                }
+                            }
+                        },
+                        "resourceCollection" : [
+                            {
+                                "path" : "managed/sector",
+                                "label" : "Sector",
+                                "query" : {
+                                    "queryFilter" : "true",
+                                    "fields" : [
+                                        "code",
+                                        "name"
+                                    ],
+                                    "sortKeys" : [ ]
+                                }
+                            }
+                        ],
+                        "userEditable" : false,
+                        "description" : ""
+                    },
+                    "division" : {
+                        "type" : "relationship",
+                        "validate" : false,
+                        "reverseRelationship" : true,
+                        "reversePropertyName" : "employees",
+                        "title" : "Division",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "policies" : [ ],
+                        "minLength" : null,
+                        "returnByDefault" : false,
+                        "usageDescription" : "",
+                        "isPersonal" : false,
+                        "properties" : {
+                            "_ref" : {
+                                "description" : "References a relationship from a managed object",
+                                "type" : "string"
+                            },
+                            "_refProperties" : {
+                                "description" : "Supports metadata within the relationship",
+                                "type" : "object",
+                                "title" : "division",
+                                "properties" : {
+                                    "_id" : {
+                                        "description" : "_refProperties object ID",
+                                        "type" : "string",
+                                        "required" : false,
+                                        "propName" : "_id"
+                                    }
+                                }
+                            }
+                        },
+                        "resourceCollection" : [
+                            {
+                                "path" : "managed/bu",
+                                "label" : "division",
+                                "query" : {
+                                    "queryFilter" : "true",
+                                    "fields" : [
+                                        "code",
+                                        "name"
+                                    ],
+                                    "sortKeys" : [ ]
+                                }
+                            }
+                        ],
+                        "userEditable" : false,
+                        "description" : ""
+                    },
+                    "scmId" : {
+                        "type" : "string",
+                        "title" : "SCM UserId",
+                        "viewable" : true,
+                        "userEditable" : false
                     },
                     "country" : {
                         "type" : "string",
@@ -248,8 +362,8 @@
                         "viewable" : true,
                         "searchable" : false,
                         "userEditable" : false,
+                        "returnByDefault" : false,
                         "policies" : [ ],
-                        "returnByDefault" : true,
                         "minLength" : null,
                         "pattern" : "",
                         "type" : "array",
@@ -294,7 +408,7 @@
                         "title" : "Provisioning Roles",
                         "viewable" : true,
                         "userEditable" : false,
-                        "returnByDefault" : false,
+                        "returnByDefault" : true,
                         "type" : "array",
                         "items" : {
                             "type" : "relationship",
@@ -391,13 +505,97 @@
                             ]
                         }
                     },
+                    "authoredCommits" : {
+                        "description" : "",
+                        "title" : "SCM Authored Commits",
+                        "viewable" : true,
+                        "userEditable" : false,
+                        "type" : "array",
+                        "returnByDefault" : false,
+                        "items" : {
+                            "type" : "relationship",
+                            "reverseRelationship" : true,
+                            "reversePropertyName" : "author",
+                            "validate" : true,
+                            "properties" : {
+                                "_ref" : {
+                                    "type" : "string"
+                                },
+                                "_refProperties" : {
+                                    "type" : "object",
+                                    "properties" : {
+                                        "_id" : {
+                                            "type" : "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "resourceCollection" : [
+                                {
+                                    "path" : "managed/scmCommit",
+                                    "label" : "SCM Commit",
+                                    "query" : {
+                                        "queryFilter" : "true",
+                                        "fields" : [
+                                            "id"
+                                        ],
+                                        "sortKeys" : [
+                                            "id"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "commits" : {
+                        "description" : "",
+                        "title" : "SCM Commits",
+                        "viewable" : true,
+                        "userEditable" : false,
+                        "type" : "array",
+                        "returnByDefault" : false,
+                        "items" : {
+                            "type" : "relationship",
+                            "reverseRelationship" : true,
+                            "reversePropertyName" : "committer",
+                            "validate" : true,
+                            "properties" : {
+                                "_ref" : {
+                                    "type" : "string"
+                                },
+                                "_refProperties" : {
+                                    "type" : "object",
+                                    "properties" : {
+                                        "_id" : {
+                                            "type" : "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "resourceCollection" : [
+                                {
+                                    "path" : "managed/scmCommit",
+                                    "label" : "SCM Commit",
+                                    "query" : {
+                                        "queryFilter" : "true",
+                                        "fields" : [
+                                            "id"
+                                        ],
+                                        "sortKeys" : [
+                                            "id"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    },
                     "reports" : {
                         "description" : "",
                         "title" : "Direct Reports",
                         "viewable" : true,
                         "userEditable" : false,
                         "type" : "array",
-                        "returnByDefault" : false,
+                        "returnByDefault" : true,
                         "items" : {
                             "type" : "relationship",
                             "reverseRelationship" : true,
@@ -466,20 +664,6 @@
                     },
                     "title" : {
                         "title" : "Title",
-                        "type" : "string",
-                        "viewable" : true,
-                        "searchable" : true,
-                        "userEditable" : true
-                    },
-                    "employmentType" : {
-                        "title" : "Employment Type",
-                        "type" : "string",
-                        "viewable" : true,
-                        "searchable" : true,
-                        "userEditable" : true
-                    },
-                    "resourceType" : {
-                        "title" : "Resource Type",
                         "type" : "string",
                         "viewable" : true,
                         "searchable" : true,
@@ -1003,386 +1187,17 @@
                         "searchable" : true,
                         "userEditable" : true
                     },
-                    "parentDepartments" : {
-                        "description" : "",
-                        "title" : "Departments",
-                        "viewable" : true,
-                        "searchable" : false,
-                        "userEditable" : false,
-                        "policies" : [ ],
-                        "returnByDefault" : true,
-                        "minLength" : null,
-                        "pattern" : "",
-                        "type" : "array",
-                        "items" : {
-                            "type" : "relationship",
-                            "reverseRelationship" : true,
-                            "reversePropertyName" : "emailLists",
-                            "validate" : true,
-                            "properties" : {
-                                "_ref" : {
-                                    "type" : "string"
-                                },
-                                "_refProperties" : {
-                                    "type" : "object",
-                                    "properties" : {
-                                        "_id" : {
-                                            "type" : "string",
-                                            "required" : false,
-                                            "propName" : "_id"
-                                        }
-                                    }
-                                }
-                            },
-                            "resourceCollection" : [
-                                {
-                                    "path" : "managed/department",
-                                    "label" : "Department",
-                                    "query" : {
-                                        "queryFilter" : "true",
-                                        "fields" : [
-                                            "name",
-                                            "code",
-                                            "description"
-                                        ],
-                                        "sortKeys" : [ ]
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                },
-                "order" : [
-                    "name",
-                    "description",
-                    "dn",
-                    "member",
-                    "groupType",
-                    "parentDepartments"
-                ],
-                "required" : [
-                    "dn"
-                ]
-            },
-            "iconClass" : "icon-database",
-            "iconSrc" : "img/icon-managedobject.png",
-            "type" : "Managed Object"
-        },
-        {
-            "name" : "organization",
-            "schema" : {
-                "id" : "urn:jsonschema:org:forgerock:openidm:managed:api:Organization",
-                "$schema" : "http://forgerock.org/json-schema#",
-                "type" : "object",
-                "title" : "Organization",
-                "description" : "Organization",
-                "icon" : "fa-building-o",
-                "properties" : {
-                    "name" : {
-                        "title" : "",
-                        "type" : "string",
-                        "viewable" : true,
-                        "searchable" : true,
-                        "userEditable" : true
-                    },
-                    "departments" : {
-                        "description" : "",
-                        "title" : "Departments",
-                        "viewable" : true,
-                        "searchable" : false,
-                        "userEditable" : false,
-                        "policies" : [ ],
-                        "returnByDefault" : true,
-                        "minLength" : null,
-                        "pattern" : "",
-                        "type" : "array",
-                        "items" : {
-                            "type" : "relationship",
-                            "reverseRelationship" : true,
-                            "reversePropertyName" : "organization",
-                            "validate" : true,
-                            "properties" : {
-                                "_ref" : {
-                                    "type" : "string"
-                                },
-                                "_refProperties" : {
-                                    "type" : "object",
-                                    "properties" : {
-                                        "_id" : {
-                                            "type" : "string",
-                                            "required" : false,
-                                            "propName" : "_id"
-                                        }
-                                    }
-                                }
-                            },
-                            "resourceCollection" : [
-                                {
-                                    "path" : "managed/department",
-                                    "label" : "Department",
-                                    "query" : {
-                                        "queryFilter" : "true",
-                                        "fields" : [
-                                            "code",
-                                            "name",
-                                            "description"
-                                        ],
-                                        "sortKeys" : [ ]
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "web_url" : {
-                        "title" : "",
-                        "type" : "string",
-                        "viewable" : true,
-                        "searchable" : true,
-                        "userEditable" : false
-                    },
-                    "org_num" : {
-                        "title" : "",
-                        "type" : "string",
-                        "viewable" : true,
-                        "searchable" : true,
-                        "userEditable" : true
-                    },
-                    "description" : {
-                        "title" : "",
-                        "type" : "string",
-                        "viewable" : true,
-                        "searchable" : true,
-                        "userEditable" : true
-                    },
-                    "id" : {
-                        "title" : "",
-                        "type" : "string",
-                        "viewable" : true,
-                        "searchable" : true,
-                        "userEditable" : true
-                    },
-                    "company" : {
-                        "title" : "",
-                        "type" : "string",
-                        "viewable" : true,
-                        "searchable" : true,
-                        "userEditable" : true
-                    },
-                    "alt_phone" : {
-                        "title" : "",
-                        "type" : "string",
-                        "viewable" : true,
-                        "searchable" : true,
-                        "userEditable" : true
-                    },
-                    "billing_code" : {
-                        "title" : "",
-                        "type" : "string",
-                        "viewable" : true,
-                        "searchable" : true,
-                        "userEditable" : true
-                    },
-                    "contact" : {
-                        "title" : "",
-                        "type" : "string",
-                        "viewable" : true,
-                        "searchable" : true,
-                        "userEditable" : true
-                    },
-                    "creation_user" : {
-                        "title" : "",
-                        "type" : "string",
-                        "viewable" : false,
-                        "searchable" : true,
-                        "userEditable" : false
-                    },
-                    "creation_date" : {
-                        "title" : "",
-                        "type" : "string",
-                        "viewable" : false,
-                        "searchable" : true,
-                        "userEditable" : false
-                    },
-                    "last_mod_dt" : {
-                        "title" : "",
-                        "type" : "string",
-                        "viewable" : false,
-                        "searchable" : true,
-                        "userEditable" : false
-                    },
-                    "last_mod_by" : {
-                        "title" : "",
-                        "type" : "string",
-                        "viewable" : false,
-                        "searchable" : true,
-                        "userEditable" : false
-                    },
-                    "email_addr" : {
-                        "title" : "",
-                        "type" : "string",
-                        "viewable" : true,
-                        "searchable" : true,
-                        "userEditable" : true
-                    },
-                    "fax_phone" : {
-                        "title" : "",
-                        "type" : "string",
-                        "viewable" : true,
-                        "searchable" : true,
-                        "userEditable" : true
-                    },
-                    "location" : {
-                        "title" : "",
-                        "type" : "string",
-                        "viewable" : true,
-                        "searchable" : true,
-                        "userEditable" : true
-                    },
-                    "phone_number" : {
-                        "title" : "",
-                        "type" : "string",
-                        "viewable" : true,
-                        "searchable" : true,
-                        "userEditable" : true
-                    },
-                    "service_type" : {
-                        "title" : "",
-                        "type" : "string",
-                        "viewable" : true,
-                        "searchable" : true,
-                        "userEditable" : true
-                    },
-                    "people" : {
-                        "description" : "People",
-                        "title" : "People",
-                        "viewable" : true,
-                        "userEditable" : false,
-                        "type" : "array",
-                        "returnByDefault" : true,
-                        "usageDescription" : "",
-                        "isPersonal" : false,
-                        "items" : {
-                            "type" : "relationship",
-                            "id" : "urn:jsonschema:org:forgerock:openidm:managed:api:Organization:people:items",
-                            "title" : "People Items",
-                            "reverseRelationship" : true,
-                            "reversePropertyName" : "organization",
-                            "validate" : true,
-                            "properties" : {
-                                "_ref" : {
-                                    "description" : "References a relationship from a managed object",
-                                    "type" : "string"
-                                },
-                                "_refProperties" : {
-                                    "description" : "Supports metadata within the relationship",
-                                    "type" : "object",
-                                    "title" : "People Items _refProperties",
-                                    "properties" : {
-                                        "_id" : {
-                                            "description" : "_refProperties object ID",
-                                            "type" : "string"
-                                        }
-                                    }
-                                }
-                            },
-                            "resourceCollection" : [
-                                {
-                                    "path" : "managed/user",
-                                    "label" : "User",
-                                    "query" : {
-                                        "queryFilter" : "true",
-                                        "fields" : [
-                                            "userName",
-                                            "mail",
-                                            "givenName",
-                                            "sn"
-                                        ]
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "version_number" : {
-                        "title" : "",
-                        "type" : "string",
-                        "viewable" : false,
-                        "searchable" : true,
-                        "userEditable" : false
-                    },
-                    "delete_flag" : {
-                        "title" : "",
-                        "type" : "string",
-                        "viewable" : false,
-                        "searchable" : true,
-                        "userEditable" : false
-                    }
-                },
-                "order" : [
-                    "name",
-                    "org_num",
-                    "description",
-                    "web_url",
-                    "company",
-                    "alt_phone",
-                    "contact",
-                    "id",
-                    "creation_user",
-                    "creation_date",
-                    "last_mod_dt",
-                    "last_mod_by",
-                    "email_addr",
-                    "fax_phone",
-                    "location",
-                    "phone_number",
-                    "service_type",
-                    "version_number",
-                    "departments"
-                ],
-                "required" : [
-                    "name",
-                    "id"
-                ]
-            }
-        },
-        {
-            "name" : "entity",
-            "schema" : {
-                "$schema" : "http://forgerock.org/json-schema#",
-                "type" : "object",
-                "title" : "Entity",
-                "description" : "",
-                "icon" : "fa-android",
-                "properties" : {
-                    "name" : {
-                        "title" : "",
-                        "type" : "string",
-                        "viewable" : true,
-                        "searchable" : true,
-                        "userEditable" : true
-                    },
-                    "description" : {
-                        "title" : "",
-                        "type" : "string",
-                        "viewable" : true,
-                        "searchable" : true,
-                        "userEditable" : true
-                    },
-                    "web_url" : {
-                        "title" : "",
-                        "type" : "string",
-                        "viewable" : true,
-                        "searchable" : true,
-                        "userEditable" : false
-                    },
-                    "resource_contact" : {
-                        "title" : "",
+                    "department" : {
+                        "title" : "Department",
                         "type" : "relationship",
                         "viewable" : true,
                         "searchable" : true,
                         "userEditable" : false,
-                        "returnByDefault" : true,
+                        "policies" : [ ],
+                        "returnByDefault" : false,
+                        "minLength" : null,
                         "reverseRelationship" : true,
-                        "reversePropertyName" : "devices",
+                        "reversePropertyName" : "emailLists",
                         "validate" : true,
                         "properties" : {
                             "_ref" : {
@@ -1401,50 +1216,177 @@
                         },
                         "resourceCollection" : [
                             {
-                                "path" : "managed/user",
-                                "label" : "User",
+                                "path" : "managed/department",
+                                "label" : "Department",
                                 "query" : {
                                     "queryFilter" : "true",
                                     "fields" : [
-                                        "givenName",
-                                        "sn",
-                                        "userName",
-                                        "mail"
+                                            "code",
+                                            "name",
+                                            "description"
                                     ],
                                     "sortKeys" : [ ]
                                 }
                             }
                         ],
                         "description" : ""
-                    },
-                    "users" : {
-                        "description" : "",
-                        "title" : "Users",
+                    }
+                },
+                "order" : [
+                    "name",
+                    "description",
+                    "dn",
+                    "member",
+                    "groupType",
+                    "department"
+                ],
+                "required" : [
+                    "dn"
+                ]
+            },
+            "iconClass" : "icon-database",
+            "iconSrc" : "img/icon-managedobject.png",
+            "type" : "Managed Object"
+        },
+        {
+            "name" : "division",
+            "schema" : {
+                "$schema" : "http://forgerock.org/json-schema#",
+                "type" : "object",
+                "title" : "Division",
+                "description" : "",
+                "icon" : "fa-building-o",
+                "properties" : {
+                    "code" : {
+                        "title" : "Code",
+                        "type" : "string",
                         "viewable" : true,
                         "searchable" : true,
+                        "userEditable" : true
+                    },
+                    "name" : {
+                        "title" : "Name",
+                        "type" : "string",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true
+                    },
+                    "departments" : {
+                        "description" : "",
+                        "title" : "Departments",
+                        "viewable" : true,
+                        "searchable" : false,
                         "userEditable" : false,
                         "policies" : [ ],
-                        "returnByDefault" : true,
+                        "returnByDefault" : false,
                         "minLength" : null,
                         "pattern" : "",
                         "type" : "array",
                         "items" : {
                             "type" : "relationship",
                             "reverseRelationship" : true,
-                            "reversePropertyName" : "workPlace",
+                            "reversePropertyName" : "division",
                             "validate" : true,
                             "properties" : {
                                 "_ref" : {
-                                    "description" : "References a relationship from a managed object",
                                     "type" : "string"
                                 },
                                 "_refProperties" : {
-                                    "description" : "Supports metadata within the relationship",
                                     "type" : "object",
-                                    "title" : "WorkPlace _refProperties",
                                     "properties" : {
                                         "_id" : {
-                                            "description" : "_refProperties object ID",
+                                            "type" : "string",
+                                            "required" : false,
+                                            "propName" : "_id"
+                                        }
+                                    }
+                                }
+                            },
+                            "resourceCollection" : [
+                                {
+                                    "path" : "managed/department",
+                                    "label" : "Department",
+                                    "query" : {
+                                        "queryFilter" : "true",
+                                        "fields" : [
+                                            "code",
+                                        "name"
+
+                                        ],
+                                        "sortKeys" : [ ]
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "sectors" : {
+                        "description" : "",
+                        "title" : "Sectors",
+                        "viewable" : true,
+                        "searchable" : false,
+                        "userEditable" : false,
+                        "policies" : [ ],
+                        "returnByDefault" : false,
+                        "minLength" : null,
+                        "pattern" : "",
+                        "type" : "array",
+                        "items" : {
+                            "type" : "relationship",
+                            "reverseRelationship" : true,
+                            "reversePropertyName" : "division",
+                            "validate" : true,
+                            "properties" : {
+                                "_ref" : {
+                                    "type" : "string"
+                                },
+                                "_refProperties" : {
+                                    "type" : "object",
+                                    "properties" : {
+                                        "_id" : {
+                                            "type" : "string",
+                                            "required" : false,
+                                            "propName" : "_id"
+                                        }
+                                    }
+                                }
+                            },
+                            "resourceCollection" : [
+                                {
+                                    "path" : "managed/sector",
+                                    "label" : "Sector",
+                                    "query" : {
+                                        "queryFilter" : "true",
+                                        "fields" : [
+                                            "code",
+                                        "name"
+
+                                        ],
+                                        "sortKeys" : [ ]
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "employees" : {
+                        "title" : "Employees",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : false,
+                        "returnByDefault" : false,
+                        "type" : "array",
+                        "items" : {
+                            "type" : "relationship",
+                            "reverseRelationship" : true,
+                            "reversePropertyName" : "division",
+                            "validate" : true,
+                            "properties" : {
+                                "_ref" : {
+                                    "type" : "string"
+                                },
+                                "_refProperties" : {
+                                    "type" : "object",
+                                    "properties" : {
+                                        "_id" : {
                                             "type" : "string",
                                             "required" : false,
                                             "propName" : "_id"
@@ -1472,14 +1414,11 @@
                     }
                 },
                 "order" : [
-                    "name",
-                    "description",
-                    "web_url",
-                    "resource_contact",
-                    "users"
+                    "code",
+                    "name"
                 ],
                 "required" : [
-                    "name"
+                    "code"
                 ]
             }
         },
@@ -1513,24 +1452,17 @@
                         "searchable" : true,
                         "userEditable" : true
                     },
-                    "last_update" : {
-                        "title" : "",
-                        "type" : "string",
-                        "viewable" : false,
-                        "searchable" : true,
-                        "userEditable" : false
-                    },
                     "employees" : {
                         "title" : "Employees",
                         "viewable" : true,
                         "searchable" : true,
                         "userEditable" : false,
-                        "returnByDefault" : true,
+                        "returnByDefault" : false,
                         "type" : "array",
                         "items" : {
                             "type" : "relationship",
                             "reverseRelationship" : true,
-                            "reversePropertyName" : "departments",
+                            "reversePropertyName" : "department",
                             "validate" : true,
                             "properties" : {
                                 "_ref" : {
@@ -1543,12 +1475,6 @@
                                             "type" : "string",
                                             "required" : false,
                                             "propName" : "_id"
-                                        },
-                                        "percentage" : {
-                                            "label" : "",
-                                            "type" : "string",
-                                            "required" : false,
-                                            "propName" : "percentage"
                                         }
                                     }
                                 }
@@ -1572,13 +1498,13 @@
                         },
                         "description" : ""
                     },
-                    "organization" : {
-                        "title" : "Organization",
+                    "division" : {
+                        "title" : "Division",
                         "type" : "relationship",
                         "viewable" : true,
                         "searchable" : true,
                         "userEditable" : false,
-                        "returnByDefault" : true,
+                        "returnByDefault" : false,
                         "reverseRelationship" : true,
                         "reversePropertyName" : "departments",
                         "validate" : true,
@@ -1599,14 +1525,13 @@
                         },
                         "resourceCollection" : [
                             {
-                                "path" : "managed/organization",
-                                "label" : "Organization",
+                                "path" : "managed/bu",
+                                "label" : "division",
                                 "query" : {
                                     "queryFilter" : "true",
                                     "fields" : [
-                                        "name",
-                                        "description",
-                                        "org_num"
+                                        "code",
+                                        "name"
                                     ],
                                     "sortKeys" : [ ]
                                 }
@@ -1614,18 +1539,67 @@
                         ],
                         "description" : ""
                     },
+                    "sectors" : {
+                        "description" : "",
+                        "title" : "Sectors",
+                        "viewable" : true,
+                        "searchable" : false,
+                        "userEditable" : false,
+                        "policies" : [ ],
+                        "returnByDefault" : false,
+                        "minLength" : null,
+                        "pattern" : "",
+                        "type" : "array",
+                        "items" : {
+                            "type" : "relationship",
+                            "reverseRelationship" : true,
+                            "reversePropertyName" : "department",
+                            "validate" : true,
+                            "properties" : {
+                                "_ref" : {
+                                    "type" : "string"
+                                },
+                                "_refProperties" : {
+                                    "type" : "object",
+                                    "properties" : {
+                                        "_id" : {
+                                            "type" : "string",
+                                            "required" : false,
+                                            "propName" : "_id"
+                                        }
+                                    }
+                                }
+                            },
+                            "resourceCollection" : [
+                                {
+                                    "path" : "managed/sector",
+                                    "label" : "Sector",
+                                    "query" : {
+                                        "queryFilter" : "true",
+                                        "fields" : [
+                                            "code",
+                                            "name"
+                                        ],
+                                        "sortKeys" : [ ]
+                                    }
+                                }
+                            ]
+                        }
+                    },
                     "emailLists" : {
                         "title" : "Email Lists",
                         "viewable" : true,
                         "searchable" : true,
                         "userEditable" : false,
-                        "returnByDefault" : true,
+                        "policies" : [ ],
+                        "returnByDefault" : false,
+                        "minLength" : null,
                         "description" : "",
                         "type" : "array",
                         "items" : {
                             "type" : "relationship",
                             "reverseRelationship" : true,
-                            "reversePropertyName" : "parentDepartments",
+                            "reversePropertyName" : "department",
                             "validate" : true,
                             "properties" : {
                                 "_ref" : {
@@ -1649,8 +1623,7 @@
                                     "query" : {
                                         "queryFilter" : "true",
                                         "fields" : [
-                                            "name",
-                                            "dn"
+                                            "name"
                                         ],
                                         "sortKeys" : [ ]
                                     }
@@ -1663,9 +1636,9 @@
                     "code",
                     "name",
                     "description",
-                    "last_update",
                     "employees",
-                    "organization",
+                    "sectors",
+                    "division",
                     "emailLists"
                 ],
                 "required" : [
@@ -1674,22 +1647,960 @@
             }
         },
         {
-            "name" : "bitbucketProject",
+            "name" : "sector",
             "schema" : {
                 "$schema" : "http://forgerock.org/json-schema#",
                 "type" : "object",
-                "title" : "Bitbucket Project",
+                "title" : "Sector",
                 "description" : "",
-                "icon" : "fa-bitbucket-square",
+                "icon" : "fa-building",
                 "properties" : {
-                    "key" : {
+                    "code" : {
+                        "title" : "Code",
+                        "type" : "string",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true
+                    },
+                    "name" : {
+                        "title" : "Name",
+                        "type" : "string",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true
+                    },
+                    "description" : {
+                        "title" : "",
+                        "type" : "string",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true
+                    },
+                    "department" : {
+                        "title" : "Department",
+                        "type" : "relationship",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : false,
+                        "returnByDefault" : false,
+                        "reverseRelationship" : true,
+                        "reversePropertyName" : "sectors",
+                        "validate" : true,
+                        "properties" : {
+                            "_ref" : {
+                                "type" : "string"
+                            },
+                            "_refProperties" : {
+                                "type" : "object",
+                                "properties" : {
+                                    "_id" : {
+                                        "type" : "string",
+                                        "required" : false,
+                                        "propName" : "_id"
+                                    }
+                                }
+                            }
+                        },
+                        "resourceCollection" : [
+                            {
+                                "path" : "managed/department",
+                                "label" : "Department",
+                                "query" : {
+                                    "queryFilter" : "true",
+                                    "fields" : [
+                                        "code",
+                                        "name"
+                                    ],
+                                    "sortKeys" : [ ]
+                                }
+                            }
+                        ],
+                        "description" : ""
+                    },
+                    "parentSector" : {
+                        "title" : "Parent Sector",
+                        "type" : "relationship",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : false,
+                        "returnByDefault" : false,
+                        "reverseRelationship" : true,
+                        "reversePropertyName" : "subSectors",
+                        "validate" : true,
+                        "properties" : {
+                            "_ref" : {
+                                "type" : "string"
+                            },
+                            "_refProperties" : {
+                                "type" : "object",
+                                "properties" : {
+                                    "_id" : {
+                                        "type" : "string",
+                                        "required" : false,
+                                        "propName" : "_id"
+                                    }
+                                }
+                            }
+                        },
+                        "resourceCollection" : [
+                            {
+                                "path" : "managed/sector",
+                                "label" : "Sector",
+                                "query" : {
+                                    "queryFilter" : "true",
+                                    "fields" : [
+                                        "code",
+                                        "name"
+                                    ],
+                                    "sortKeys" : [ ]
+                                }
+                            }
+                        ],
+                        "description" : ""
+                    },
+                    "subSectors" : {
                         "description" : "",
-                        "title" : "key",
+                        "title" : "SubSectors",
                         "viewable" : true,
                         "searchable" : false,
-                        "userEditable" : true,
+                        "userEditable" : false,
                         "policies" : [ ],
                         "returnByDefault" : false,
+                        "minLength" : null,
+                        "pattern" : "",
+                        "type" : "array",
+                        "items" : {
+                            "type" : "relationship",
+                            "reverseRelationship" : true,
+                            "reversePropertyName" : "parentSector",
+                            "validate" : true,
+                            "properties" : {
+                                "_ref" : {
+                                    "type" : "string"
+                                },
+                                "_refProperties" : {
+                                    "type" : "object",
+                                    "properties" : {
+                                        "_id" : {
+                                            "type" : "string",
+                                            "required" : false,
+                                            "propName" : "_id"
+                                        }
+                                    }
+                                }
+                            },
+                            "resourceCollection" : [
+                                {
+                                    "path" : "managed/sector",
+                                    "label" : "Sector",
+                                    "query" : {
+                                        "queryFilter" : "true",
+                                        "fields" : [
+                                            "code",
+                                        "name"
+
+                                        ],
+                                        "sortKeys" : [ ]
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "division" : {
+                        "title" : "Division",
+                        "type" : "relationship",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : false,
+                        "returnByDefault" : false,
+                        "reverseRelationship" : true,
+                        "reversePropertyName" : "sectors",
+                        "validate" : true,
+                        "properties" : {
+                            "_ref" : {
+                                "type" : "string"
+                            },
+                            "_refProperties" : {
+                                "type" : "object",
+                                "properties" : {
+                                    "_id" : {
+                                        "type" : "string",
+                                        "required" : false,
+                                        "propName" : "_id"
+                                    }
+                                }
+                            }
+                        },
+                        "resourceCollection" : [
+                            {
+                                "path" : "managed/bu",
+                                "label" : "division",
+                                "query" : {
+                                    "queryFilter" : "true",
+                                    "fields" : [
+                                        "code",
+                                        "name"
+                                    ],
+                                    "sortKeys" : [ ]
+                                }
+                            }
+                        ],
+                        "description" : ""
+                    },
+                    "employees" : {
+                        "title" : "Employees",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : false,
+                        "returnByDefault" : false,
+                        "type" : "array",
+                        "items" : {
+                            "type" : "relationship",
+                            "reverseRelationship" : true,
+                            "reversePropertyName" : "division",
+                            "validate" : true,
+                            "properties" : {
+                                "_ref" : {
+                                    "type" : "string"
+                                },
+                                "_refProperties" : {
+                                    "type" : "object",
+                                    "properties" : {
+                                        "_id" : {
+                                            "type" : "string",
+                                            "required" : false,
+                                            "propName" : "_id"
+                                        }
+                                    }
+                                }
+                            },
+                            "resourceCollection" : [
+                                {
+                                    "path" : "managed/user",
+                                    "label" : "User",
+                                    "query" : {
+                                        "queryFilter" : "true",
+                                        "fields" : [
+                                            "givenName",
+                                            "sn",
+                                            "userName",
+                                            "mail"
+                                        ],
+                                        "sortKeys" : [ ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                },
+                "order" : [
+                    "code",
+                    "name"
+                ],
+                "required" : [
+                    "code"
+                ]
+            }
+        },
+        {
+            "name" : "scmRepo",
+            "schema" : {
+                "$schema" : "http://forgerock.org/json-schema#",
+                "type" : "object",
+                "title" : "SCM Repo",
+                "description" : "Source Code Repository",
+                "icon" : "fa-bitbucket",
+                "properties" : {
+                    "id" : {
+                        "description" : "",
+                        "title" : "id",
+                        "viewable" : true,
+                        "searchable" : false,
+                        "userEditable" : false,
+                        "policies" : [ ],
+                        "minLength" : null,
+                        "pattern" : "",
+                        "type" : "string"
+                    },
+                    "slug" : {
+                        "description" : "",
+                        "title" : "slug",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true,
+                        "policies" : [ ],
+                        "minLength" : null,
+                        "pattern" : "",
+                        "type" : "string"
+                    },
+                    "name" : {
+                        "description" : "",
+                        "title" : "name",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true,
+                        "policies" : [ ],
+                        "minLength" : null,
+                        "pattern" : "",
+                        "type" : "string"
+                    },
+                    "description" : {
+                        "description" : "",
+                        "title" : "description",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true,
+                        "policies" : [ ],
+                        "minLength" : null,
+                        "pattern" : "",
+                        "type" : "string"
+                    },
+                    "state" : {
+                        "description" : "",
+                        "title" : "state",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true,
+                        "policies" : [ ],
+                        "minLength" : null,
+                        "pattern" : "",
+                        "type" : "string"
+                    },
+                    "statusMessage" : {
+                        "description" : "",
+                        "title" : "statusMessage",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true,
+                        "policies" : [ ],
+                        "minLength" : null,
+                        "pattern" : "",
+                        "type" : "string"
+                    },
+                    "scmId" : {
+                        "description" : "",
+                        "title" : "scmId",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true,
+                        "policies" : [ ],
+                        "minLength" : null,
+                        "pattern" : "",
+                        "type" : "string"
+                    },
+                    "forkable" : {
+                        "description" : "",
+                        "title" : "forkable",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : false,
+                        "policies" : [ ],
+                        "minLength" : null,
+                        "pattern" : "",
+                        "type" : "boolean"
+                    },
+                    "pods" : {
+                        "description" : "",
+                        "title" : "K8s Pods",
+                        "viewable" : true,
+                        "userEditable" : false,
+                        "type" : "array",
+                        "items" : {
+                            "type" : "relationship",
+                            "reverseRelationship" : true,
+                            "reversePropertyName" : "repo",
+                            "validate" : true,
+                            "properties" : {
+                                "_ref" : {
+                                    "type" : "string"
+                                },
+                                "_refProperties" : {
+                                    "type" : "object",
+                                    "properties" : {
+                                        "_id" : {
+                                            "type" : "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "resourceCollection" : [
+                                {
+                                    "path" : "managed/pod",
+                                    "label" : "K8s Pod",
+                                    "query" : {
+                                        "queryFilter" : "true",
+                                        "fields" : [
+                                            "name","namespace","commit","branch","creationTimestamp"
+                                        ],
+                                        "sortKeys" : [
+                                            "name"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "commits" : {
+                        "description" : "",
+                        "title" : "SCM Commits",
+                        "viewable" : true,
+                        "userEditable" : false,
+                        "type" : "array",
+                        "returnByDefault" : false,
+                        "items" : {
+                            "type" : "relationship",
+                            "reverseRelationship" : true,
+                            "reversePropertyName" : "repos",
+                            "validate" : true,
+                            "properties" : {
+                                "_ref" : {
+                                    "type" : "string"
+                                },
+                                "_refProperties" : {
+                                    "type" : "object",
+                                    "properties" : {
+                                        "_id" : {
+                                            "type" : "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "resourceCollection" : [
+                                {
+                                    "path" : "managed/scmCommit",
+                                    "label" : "SCM Commit",
+                                    "query" : {
+                                        "queryFilter" : "true",
+                                        "fields" : [
+                                            "id"
+                                        ],
+                                        "sortKeys" : [
+                                            "id"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "branches" : {
+                        "description" : "",
+                        "title" : "SCM Branches",
+                        "viewable" : true,
+                        "userEditable" : false,
+                        "type" : "array",
+                        "returnByDefault" : false,
+                        "items" : {
+                            "type" : "relationship",
+                            "reverseRelationship" : true,
+                            "reversePropertyName" : "repository",
+                            "validate" : true,
+                            "properties" : {
+                                "_ref" : {
+                                    "type" : "string"
+                                },
+                                "_refProperties" : {
+                                    "type" : "object",
+                                    "properties" : {
+                                        "_id" : {
+                                            "type" : "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "resourceCollection" : [
+                                {
+                                    "path" : "managed/scmBranch",
+                                    "label" : "SCM Branch",
+                                    "query" : {
+                                        "queryFilter" : "true",
+                                        "fields" : [
+                                            "id"
+                                        ],
+                                        "sortKeys" : [
+                                            "id"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "permissions" : {
+                        "type" : "array",
+                        "policies" : [ ],
+                        "minLength" : null,
+                        "searchable" : "false",
+                        "viewable" : "true",
+                        "items" : {
+                            "type" : "string"
+                        }
+                    },
+                    "links" : {
+	                	"type" : "object",
+	                	"viewable" : true,
+	                	"userEditable" : false,
+                        "properties" : {
+      						"clones" : {
+								"type" : "array",
+                                "items" : {
+                                    "type" : "object",
+                                    "properties" : {
+                                        "href" : {
+                                            "type" : "string"
+                                        },
+                                        "name" : {
+                                            "type" : "string"
+                                        }
+                                    }
+                                }
+							},
+      						"self" : {
+								"type" : "array",
+                                "items" : {
+                                    "type" : "object",
+                                    "properties" : {
+                                        "href" : {
+                                            "type" : "string"
+                                        },
+                                        "name" : {
+                                            "type" : "string"
+                                        }
+                                    }
+                                }
+							}
+                        },
+                        "title" : "links",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : false,
+                        "returnByDefault" : false
+                    },
+                    "project" : {
+                        "description" : "",
+                        "title" : "SCM Project",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : false,
+                        "policies" : [ ],
+                        "returnByDefault" : false,
+                        "minLength" : null,
+                        "pattern" : "",
+                        "type" : "relationship",
+                        "reverseRelationship" : true,
+                        "reversePropertyName" : "repositories",
+                        "validate" : true,
+                        "properties" : {
+                            "_ref" : {
+                                "type" : "string"
+                            },
+                            "_refProperties" : {
+                                "type" : "object",
+                                "properties" : {
+                                    "_id" : {
+                                        "type" : "string",
+                                        "label" : ""
+                                    }
+                                }
+                            }
+                        },
+                        "resourceCollection" : [
+                            {
+                                "path" : "managed/scmProject",
+                                "label" : "SCM Project",
+                                "query" : {
+                                    "queryFilter" : "true",
+                                    "fields" : [
+                                        "key"
+                                    ],
+                                    "sortKeys" : [
+                                        "key"
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    "public" : {
+                        "description" : "",
+                        "title" : "public",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : true,
+                        "policies" : [ ],
+                        "minLength" : null,
+                        "pattern" : "",
+                        "type" : "boolean"
+                    }
+                },
+                "required" : [
+                    "id",
+                    "slug",
+                    "name"
+                ],
+                "order" : [
+                    "name",
+                    "slug",
+                    "id",
+                    "description",
+                    "state",
+                    "statusMessage",
+                    "scmId",
+                    "forkable",
+                    "links",
+                    "project",
+                    "public"
+                ]
+            }
+        },
+        {
+            "name" : "scmCommit",
+            "schema" : {
+                "$schema" : "http://forgerock.org/json-schema#",
+                "type" : "object",
+                "title" : "SCM Commit",
+                "description" : "Source Code Management Commit",
+                "icon" : "fa-bitbucket-square",
+                "properties" : {
+                    "displayId" : {
+                        "title" : "Id",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : false,
+                        "type" : "string"
+                    },
+                    "id" : {
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : false,
+                        "type" : "string"
+                    },
+                    "message" : {
+                        "title" : "Message",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : false,
+                        "type" : [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "authorTimestamp" : {
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : false,
+                        "type" : "string"
+                    },
+                    "committerTimestamp" : {
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : false,
+                        "type" : "string"
+                    },
+                    "parents" : {
+                        "description" : "",
+                        "title" : "SCM Commits",
+                        "viewable" : true,
+                        "userEditable" : false,
+                        "type" : "array",
+                        "returnByDefault" : true,
+                        "items" : {
+                            "type" : "relationship",
+                            "reverseRelationship" : true,
+                            "reversePropertyName" : "children",
+                            "validate" : false,
+                            "properties" : {
+                                "_ref" : {
+                                    "type" : "string"
+                                },
+                                "_refProperties" : {
+                                    "type" : "object",
+                                    "properties" : {
+                                        "_id" : {
+                                            "type" : "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "resourceCollection" : [
+                                {
+                                    "path" : "managed/scmCommit",
+                                    "label" : "SCM Commit",
+                                    "query" : {
+                                        "queryFilter" : "true",
+                                        "fields" : [
+                                            "id"
+                                        ],
+                                        "sortKeys" : [
+                                            "id"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "children" : {
+                        "description" : "",
+                        "title" : "SCM Commits",
+                        "viewable" : true,
+                        "userEditable" : false,
+                        "type" : "array",
+                        "returnByDefault" : true,
+                        "items" : {
+                            "type" : "relationship",
+                            "reverseRelationship" : true,
+                            "reversePropertyName" : "parents",
+                            "validate" : false,
+                            "properties" : {
+                                "_ref" : {
+                                    "type" : "string"
+                                },
+                                "_refProperties" : {
+                                    "type" : "object",
+                                    "properties" : {
+                                        "_id" : {
+                                            "type" : "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "resourceCollection" : [
+                                {
+                                    "path" : "managed/scmCommit",
+                                    "label" : "SCM Commit",
+                                    "query" : {
+                                        "queryFilter" : "true",
+                                        "fields" : [
+                                            "id"
+                                        ],
+                                        "sortKeys" : [
+                                            "id"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "pods" : {
+                        "description" : "",
+                        "title" : "K8s Pods",
+                        "viewable" : true,
+                        "userEditable" : false,
+                        "type" : "array",
+                        "returnByDefault" : true,
+                        "items" : {
+                            "type" : "relationship",
+                            "reverseRelationship" : true,
+                            "reversePropertyName" : "commit",
+                            "validate" : true,
+                            "properties" : {
+                                "_ref" : {
+                                    "type" : "string"
+                                },
+                                "_refProperties" : {
+                                    "type" : "object",
+                                    "properties" : {
+                                        "_id" : {
+                                            "type" : "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "resourceCollection" : [
+                                {
+                                    "path" : "managed/pod",
+                                    "label" : "K8s Pod",
+                                    "query" : {
+                                        "queryFilter" : "true",
+                                        "fields" : [
+                                            "name","namespace","commit","branch","creationTimestamp"
+                                        ],
+                                        "sortKeys" : [
+                                            "name"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "repos" : {
+                        "description" : "",
+                        "title" : "Repositories",
+                        "viewable" : true,
+                        "userEditable" : false,
+                        "type" : "array",
+                        "returnByDefault" : true,
+                        "items" : {
+                            "type" : "relationship",
+                            "reverseRelationship" : true,
+                            "reversePropertyName" : "commits",
+                            "validate" : true,
+                            "properties" : {
+                                "_ref" : {
+                                    "type" : "string"
+                                },
+                                "_refProperties" : {
+                                    "type" : "object",
+                                    "properties" : {
+                                        "_id" : {
+                                            "type" : "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "resourceCollection" : [
+                                {
+                                    "path" : "managed/scmRepo",
+                                    "label" : "SCMRepo",
+                                    "query" : {
+                                        "queryFilter" : "true",
+                                        "fields" : [
+                                            "id",
+                                            "name"
+                                        ],
+                                        "sortKeys" : [
+                                            "name"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                },
+                "required" : [
+                    "id",
+                    "displayId"
+                ],
+                "order" : [
+                    "id",
+                    "displayId"
+                ]
+            }
+        },
+        {
+            "name" : "scmBranch",
+            "schema" : {
+                "$schema" : "http://forgerock.org/json-schema#",
+                "type" : "object",
+                "title" : "SCM Branch",
+                "description" : "Source Code Management Branch",
+                "icon" : "fa-bitbucket-square",
+                "properties" : {
+                    "id" : {
+                        "description" : "",
+                        "title" : "ID",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : false,
+                        "policies" : [ ],
+                        "minLength" : null,
+                        "pattern" : "",
+                        "type" : "string"
+                    },
+                    "displayId" : {
+						"type" : "string",
+						"viewable" : true,
+						"userEditable" : false
+					},
+                    "type" : {
+						"type" : "string",
+						"viewable" : true,
+						"userEditable" : false
+					},
+                    "latestCommit" : {
+						"type" : "string",
+						"viewable" : true,
+						"userEditable" : false
+					},
+                    "latestChangeset" : {
+						"type" : "string",
+						"viewable" : true,
+						"userEditable" : false
+					},
+                    "isDefault" : {
+						"type" : "boolean",
+						"viewable" : true,
+						"userEditable" : false
+					},
+                    "repository" : {
+                        "description" : "",
+                        "title" : "SCM Repo",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : false,
+                        "policies" : [ ],
+                        "returnByDefault" : false,
+                        "minLength" : null,
+                        "pattern" : "",
+                        "type" : "relationship",
+                        "reverseRelationship" : true,
+                        "reversePropertyName" : "branches",
+                        "validate" : true,
+                        "properties" : {
+                            "_ref" : {
+                                "type" : "string"
+                            },
+                            "_refProperties" : {
+                                "type" : "object",
+                                "properties" : {
+                                    "_id" : {
+                                        "type" : "string",
+                                        "label" : ""
+                                    }
+                                }
+                            }
+                        },
+                        "resourceCollection" : [
+                            {
+                                "path" : "managed/scmRepo",
+                                "label" : "SCM Repo",
+                                "query" : {
+                                    "queryFilter" : "true",
+                                    "fields" : [
+                                        "id","slug"
+                                    ],
+                                    "sortKeys" : [
+                                        "slug","id"
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                },
+                "required" : [
+                    "id",
+                    "displayId"
+                ],
+                "order" : [
+                    "id",
+                    "displayId"
+                ]
+            }
+        },
+        {
+            "name" : "scmProject",
+            "schema" : {
+                "$schema" : "http://forgerock.org/json-schema#",
+                "type" : "object",
+                "title" : "SCM Project",
+                "description" : "Source Code Management Project",
+                "icon" : "fa-bitbucket-square",
+                "properties" : {
+                    "id" : {
+                        "description" : "",
+                        "title" : "ID",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : false,
+                        "policies" : [ ],
+                        "minLength" : null,
+                        "pattern" : "",
+                        "type" : "string"
+                    },
+                    "key" : {
+                        "description" : "",
+                        "title" : "Key",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : false,
+                        "policies" : [ ],
                         "minLength" : null,
                         "pattern" : "",
                         "type" : "string"
@@ -1698,118 +2609,532 @@
                         "description" : "",
                         "title" : "Name",
                         "viewable" : true,
-                        "searchable" : false,
+                        "searchable" : true,
                         "userEditable" : false,
                         "policies" : [ ],
-                        "returnByDefault" : false,
+                        "minLength" : null,
+                        "pattern" : "",
+                        "type" : [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "description" : {
+                        "description" : "",
+                        "title" : "Description",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : false,
+                        "policies" : [ ],
+                        "minLength" : null,
+                        "pattern" : "",
+                        "type" : [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "type" : {
+                        "description" : "",
+                        "title" : "Type",
+                        "viewable" : true,
+                        "searchable" : true,
+                        "userEditable" : false,
+                        "policies" : [ ],
                         "minLength" : null,
                         "pattern" : "",
                         "type" : "string"
                     },
-                    "id" : {
+                    "permissions" : {
+                        "type" : "array",
+                        "policies" : [ ],
+                        "minLength" : null,
+                        "searchable" : "false",
+                        "viewable" : "true",
+                        "items" : {
+                            "type" : "string"
+                        }
+                    },
+                    "repositories" : {
                         "description" : "",
-                        "title" : "id",
+                        "title" : "SCM Repositories",
                         "viewable" : true,
-                        "searchable" : false,
+                        "userEditable" : false,
+                        "type" : "array",
+                        "returnByDefault" : true,
+                        "items" : {
+                            "type" : "relationship",
+                            "reverseRelationship" : true,
+                            "reversePropertyName" : "project",
+                            "validate" : true,
+                            "properties" : {
+                                "_ref" : {
+                                    "type" : "string"
+                                },
+                                "_refProperties" : {
+                                    "type" : "object",
+                                    "properties" : {
+                                        "_id" : {
+                                            "type" : "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "resourceCollection" : [
+                                {
+                                    "path" : "managed/scmRepo",
+                                    "label" : "SCMRepo",
+                                    "query" : {
+                                        "queryFilter" : "true",
+                                        "fields" : [
+                                            "name",
+                                            "links"
+                                        ],
+                                        "sortKeys" : [
+                                            "name"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "commits" : {
+                        "description" : "",
+                        "title" : "SCM Commits",
+                        "viewable" : true,
+                        "userEditable" : false,
+                        "type" : "array",
+                        "returnByDefault" : false,
+                        "items" : {
+                            "type" : "relationship",
+                            "reverseRelationship" : true,
+                            "reversePropertyName" : "project",
+                            "validate" : true,
+                            "properties" : {
+                                "_ref" : {
+                                    "type" : "string"
+                                },
+                                "_refProperties" : {
+                                    "type" : "object",
+                                    "properties" : {
+                                        "_id" : {
+                                            "type" : "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "resourceCollection" : [
+                                {
+                                    "path" : "managed/scmCommit",
+                                    "label" : "SCM Commit",
+                                    "query" : {
+                                        "queryFilter" : "true",
+                                        "fields" : [
+                                            "id","message","authorTimestamp"
+                                        ],
+                                        "sortKeys" : [
+                                            "authorTimestamp"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "projectPods" : {
+                        "description" : "",
+                        "title" : "K8s Pods",
+                        "viewable" : true,
+                        "userEditable" : false,
+                        "type" : "array",
+                        "returnByDefault" : true,
+                        "items" : {
+                            "type" : "relationship",
+                            "reverseRelationship" : true,
+                            "reversePropertyName" : "project",
+                            "validate" : true,
+                            "properties" : {
+                                "_ref" : {
+                                    "type" : "string"
+                                },
+                                "_refProperties" : {
+                                    "type" : "object",
+                                    "properties" : {
+                                        "_id" : {
+                                            "type" : "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "resourceCollection" : [
+                                {
+                                    "path" : "managed/pod",
+                                    "label" : "K8s Pod",
+                                    "query" : {
+                                        "queryFilter" : "true",
+                                        "fields" : [
+                                            "name","namespace","commit","branch","creationTimestamp"
+                                        ],
+                                        "sortKeys" : [
+                                            "name"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "public" : {
+                        "description" : "",
+                        "title" : "Public",
+                        "viewable" : true,
+                        "searchable" : true,
                         "userEditable" : false,
                         "policies" : [ ],
-                        "returnByDefault" : false,
                         "minLength" : null,
                         "pattern" : "",
-                        "type" : "string"
+                        "type" : [
+                            "boolean",
+                            "null"
+                        ]
                     }
                 },
                 "required" : [
-                    "key"
+                    "id",
+                    "key",
+                    "type"
                 ],
                 "order" : [
                     "key",
                     "name",
-                    "id"
+                    "id",
+                    "description",
+                    "type",
+                    "public"
                 ]
             }
         },
         {
-            "name" : "bitbucketRepo",
+            "name" : "pod",
             "schema" : {
                 "$schema" : "http://forgerock.org/json-schema#",
                 "type" : "object",
-                "title" : "Bitbucket Repo",
-                "description" : "",
-                "icon" : "fa-bitbucket",
+                "title" : "Pod",
+                "description" : "A running Pod in a Kubernetes cluster",
+                "icon" : "fa-cube",
                 "properties" : {
-                    "_id" : {
+                    "uid" : {
                         "description" : "",
-                        "title" : "Id",
+                        "title" : "",
                         "viewable" : true,
                         "searchable" : false,
+                        "userEditable" : false,
+                        "policies" : [ ],
+                        "minLength" : null,
+                        "pattern" : "",
+                        "type" : "string"
+                    },
+                    "branch" : {
+	                	"type" : "string",
+	                	"viewable" : true,
+                        "searchable" : true,
+	                	"userEditable" : false
+	                },
+                    "name" : {
+	                	"type" : "string",
+	                	"viewable" : true,
+                        "searchable" : true,
+	                	"userEditable" : false
+	                },
+                    "namespace" : {
+	                	"type" : "string",
+	                	"viewable" : true,
+                        "searchable" : true,
+	                	"userEditable" : false
+	                },
+                    "creationTimestamp" : {
+	                	"type" : "string",
+	                	"viewable" : true,
+                        "searchable" : true,
+	                	"userEditable" : false
+	                },
+                    "generateName" : {
+	                	"type" : "string",
+	                	"viewable" : true,
+                        "searchable" : true,
+	                	"userEditable" : false
+	                },
+                    "resourceVersion" : {
+	                	"type" : "string",
+	                	"viewable" : true,
+	                	"userEditable" : false
+	                },
+                    "selfLink" : {
+	                	"type" : "string",
+	                	"viewable" : true,
+	                	"userEditable" : false
+	                },
+                    "annotations": {
+	                	"type" : "object",
+	                	"viewable" : true,
+	                	"userEditable" : false,
+                        "properties" : {
+      						"some-domain.no/git-branch" : {
+								"type" : "string"
+							},
+      						"some-domain.no/git-commit" : {
+								"type" : "string"
+							},
+      						"some-domain.no/git-url" : {
+								"type" : "string"
+							},
+      						"kubernetes.io/psp" : {
+								"type" : "string"
+							},
+      						"revision" : {
+								"type" : "string"
+							}
+                        }
+	                },
+                    "labels": {
+	                	"type" : "object",
+	                	"viewable" : true,
+	                	"userEditable" : false,
+                        "properties" : {
+      						"app" : {
+								"type" : "string"
+							},
+      						"arch" : {
+								"type" : "string"
+							},
+      						"env" : {
+								"type" : "string"
+							},
+      						"farm" : {
+								"type" : "string"
+							},
+      						"platform" : {
+								"type" : "string"
+							},
+      						"pod-template-hash" : {
+								"type" : "string"
+							},
+      						"some-domain.no/env" : {
+								"type" : "string"
+							},
+      						"some-domain.no/project" : {
+								"type" : "string"
+							},
+      						"app.kubernetes.io/instance" : {
+								"type" : "string"
+							},
+      						"app.kubernetes.io/managed-by" : {
+								"type" : "string"
+							},
+      						"app.kubernetes.io/name" : {
+								"type" : "string"
+							},
+      						"controller-uid" : {
+								"type" : "string"
+							},
+      						"helm.sh/chart" : {
+								"type" : "string"
+							},
+      						"job-name" : {
+								"type" : "string"
+							},
+      						"release_version" : {
+								"type" : "string"
+							},
+      						"splunk.some-domain.no/splunk-index" : {
+								"type" : "string"
+							},
+                            "chart" : {
+								"type" : "string"
+							},
+                            "component" : {
+								"type" : "string"
+							},
+                            "controller-revision-hash" : {
+								"type" : "string"
+							},
+                            "heritage" : {
+								"type" : "string"
+							},
+                            "release" : {
+								"type" : "string"
+							},
+                            "run" : {
+								"type" : "string"
+							},
+                            "statefulset.kubernetes.io/pod-name" : {
+								"type" : "string"
+                            }
+                        }
+                    },
+                    "ownerReferences": {
+	                	"type" : "array",
+	                	"viewable" : true,
+	                	"userEditable" : false,
+                        "items" : {
+                            "type" : "object",
+                            "properties" : {
+                                "apiVersion" : {
+                                    "type" : "string"
+                                },
+                                "kind" : {
+                                    "type" : "string"
+                                },
+                                "name" : {
+                                    "type" : "string"
+                                },
+                                "uid" : {
+                                    "type" : "string"
+                                },
+                                "blockOwnerDeletion" : {
+                                    "type" : "boolean"
+                                },
+                                "controller" : {
+                                    "type" : "boolean"
+                                }
+                            }
+                        }
+                    },
+                    "commit" : {
+                        "description" : "",
+                        "title" : "SCM Commit",
+                        "viewable" : true,
+                        "searchable" : true,
                         "userEditable" : false,
                         "policies" : [ ],
                         "returnByDefault" : false,
                         "minLength" : null,
                         "pattern" : "",
-                        "type" : "string"
+                        "type" : "relationship",
+                        "reverseRelationship" : true,
+                        "reversePropertyName" : "pods",
+                        "validate" : false,
+                        "properties" : {
+                            "_ref" : {
+                                "type" : "string"
+                            },
+                            "_refProperties" : {
+                                "type" : "object",
+                                "properties" : {
+                                    "_id" : {
+                                        "type" : "string",
+                                        "label" : ""
+                                    }
+                                }
+                            }
+                        },
+                        "resourceCollection" : [
+                            {
+                                "path" : "managed/scmCommit",
+                                "label" : "SCM Commit",
+                                "query" : {
+                                    "queryFilter" : "true",
+                                    "fields" : [
+                                        "id","slug"
+                                    ],
+                                    "sortKeys" : [
+                                        "slug","id"
+                                    ]
+                                }
+                            }
+                        ]
                     },
-                    "slug" : {
-                        "type" : "string",
-                        "title" : "slug",
+                    "repo" : {
+                        "description" : "",
+                        "title" : "SCM Repo",
                         "viewable" : true,
-                        "userEditable" : true
+                        "searchable" : true,
+                        "userEditable" : false,
+                        "policies" : [ ],
+                        "returnByDefault" : false,
+                        "minLength" : null,
+                        "pattern" : "",
+                        "type" : "relationship",
+                        "reverseRelationship" : true,
+                        "reversePropertyName" : "pods",
+                        "validate" : false,
+                        "properties" : {
+                            "_ref" : {
+                                "type" : "string"
+                            },
+                            "_refProperties" : {
+                                "type" : "object",
+                                "properties" : {
+                                    "_id" : {
+                                        "type" : "string",
+                                        "label" : ""
+                                    }
+                                }
+                            }
+                        },
+                        "resourceCollection" : [
+                            {
+                                "path" : "managed/scmRepo",
+                                "label" : "SCM Repo",
+                                "query" : {
+                                    "queryFilter" : "true",
+                                    "fields" : [
+                                        "id","slug"
+                                    ],
+                                    "sortKeys" : [
+                                        "slug","id"
+                                    ]
+                                }
+                            }
+                        ]
                     },
-                    "name" : {
-                        "type" : "string",
-                        "title" : "name",
+                    "project" : {
+                        "description" : "",
+                        "title" : "SCM Project",
                         "viewable" : true,
-                        "userEditable" : true
-                    },
-                    "description" : {
-                        "type" : "string",
-                        "title" : "description",
-                        "viewable" : true,
-                        "userEditable" : true
-                    },
-                    "scmId" : {
-                        "type" : "string",
-                        "title" : "scmId",
-                        "viewable" : true,
-                        "userEditable" : true
-                    },
-                    "state" : {
-                        "type" : "string",
-                        "title" : "state",
-                        "viewable" : true,
-                        "userEditable" : true
-                    },
-                    "statusMessage" : {
-                        "type" : "string",
-                        "title" : "statusMessage",
-                        "viewable" : true,
-                        "userEditable" : true
-                    },
-                    "forkable" : {
-                        "type" : "boolean",
-                        "title" : "forkable",
-                        "viewable" : true,
-                        "userEditable" : true
-                    },
-                    "public" : {
-                        "type" : "boolean",
-                        "title" : "public",
-                        "viewable" : true,
-                        "userEditable" : true
-                    },
-                    "links" : {
-                        "type" : "object",
-                        "title" : "links",
-                        "viewable" : true,
-                        "userEditable" : true
+                        "searchable" : true,
+                        "userEditable" : false,
+                        "policies" : [ ],
+                        "returnByDefault" : false,
+                        "minLength" : null,
+                        "pattern" : "",
+                        "type" : "relationship",
+                        "reverseRelationship" : true,
+                        "reversePropertyName" : "projectPods",
+                        "validate" : false,
+                        "properties" : {
+                            "_ref" : {
+                                "type" : "string"
+                            },
+                            "_refProperties" : {
+                                "type" : "object",
+                                "properties" : {
+                                    "_id" : {
+                                        "type" : "string",
+                                        "label" : ""
+                                    }
+                                }
+                            }
+                        },
+                        "resourceCollection" : [
+                            {
+                                "path" : "managed/scmProject",
+                                "label" : "SCM Project",
+                                "query" : {
+                                    "queryFilter" : "true",
+                                    "fields" : [
+                                        "key"
+                                    ],
+                                    "sortKeys" : [
+                                        "key"
+                                    ]
+                                }
+                            }
+                        ]
                     }
                 },
                 "required" : [
-                    "name"
+                    "uid"
                 ],
                 "order" : [
-                    "name"
+                    "uid"
                 ]
             }
         }
