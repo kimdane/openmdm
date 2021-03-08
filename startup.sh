@@ -15,6 +15,14 @@
 # replaced by your own identifying information:
 # "Portions copyright [year] [name of copyright owner]".
 #
+echo "Postgres is unavailable - sleeping for 5 seconds"
+sleep 5
+
+# delete this and use secrets instead
+if [ -f "/opt/openmdm/boot.properties" ]; then
+    mkdir -p /opt/openmdm/conf/boot/
+    cp /opt/openmdm/boot.properties /opt/openmdm/conf/boot/boot.properties
+fi
 
 JAVA_VER=$(java -version 2>&1 | sed 's/.* version "\(.*\)\.\(.*\)\..*"/\1\2/; 1q')
 if [ "$JAVA_VER" -lt 17 ]; then
@@ -56,7 +64,7 @@ PRGDIR=`dirname "$PRG"`
 [ -z "$OPENIDM_PID_FILE" ] && OPENIDM_PID_FILE="$OPENIDM_HOME"/.openidm.pid
 
 # Only set OPENIDM_OPTS if not already set
-[ -z "$OPENIDM_OPTS" ] && OPENIDM_OPTS="-Xmx1024m -Xms1024m"
+[ -z "$OPENIDM_OPTS" ] && OPENIDM_OPTS="-Xmx2048m -Xms2048m"
 
 # Set JDK Logger config file if it is present and an override has not been issued
 PROJECT_HOME=$OPENIDM_HOME

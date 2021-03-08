@@ -8,7 +8,7 @@
         "bundleVersion" : "[1.4.0.0,1.5.0.0)"
     },
     "poolConfigOption" : {
-        "maxObjects" : 25,
+        "maxObjects" : 50,
         "maxIdle" : 10,
         "maxWait" : 150000,
         "minEvictableIdleTimeMillis" : 120000,
@@ -31,8 +31,8 @@
     },
     "resultsHandlerConfig" : {
         "enableNormalizingResultsHandler" : false,
-        "enableFilteredResultsHandler" : false,
-        "enableCaseInsensitiveFilter" : false,
+        "enableFilteredResultsHandler" : true,
+        "enableCaseInsensitiveFilter" : true,
         "enableAttributesToGetSearchResultsHandler" : false
     },
     "configurationProperties" : {
@@ -67,6 +67,65 @@
         ]
     },
     "objectTypes" : {
+        "user" : {
+            "$schema" : "http://json-schema.org/draft-03/schema",
+            "id" : "user",
+            "type" : "object",
+            "nativeType" : "user",
+            "properties" : {
+                "id" : {
+                    "type" : "integer",
+                    "required" : true,
+                    "nativeName" : "id",
+                    "nativeType" : "string",
+                    "flags" : [
+                        "NOT_UPDATEABLE"
+                    ]
+                },
+                "slug" : {
+                    "type" : "string",
+                    "required" : true,
+                    "nativeName" : "__UID__",
+                    "nativeType" : "string"
+                },
+                "name" : {
+                    "type" : "string",
+                    "required" : true,
+                    "nativeName" : "__NAME__",
+                    "nativeType" : "string"
+                },
+                "emailAddress" : {
+                    "type" : "string",
+                    "nativeName" : "emailAddress",
+                    "nativeType" : "string"
+                },
+                "displayName" : {
+                    "type" : "string",
+                    "nativeName" : "displayName",
+                    "nativeType" : "string"
+                },
+                "active" : {
+                    "type" : "boolean",
+                    "nativeName" : "active",
+                    "nativeType" : "boolean"
+                },
+                "links" : {
+                    "required" : false,
+                    "type" : "object",
+                    "items" : {
+                        "type" : "object",
+                        "nativeType" : "object"
+                    },
+                    "nativeType" : "object",
+                    "nativeName" : "links"
+                },
+                "type" : {
+                    "type" : "string",
+                    "nativeName" : "type",
+                    "nativeType" : "string"
+                }
+            }
+        },
         "project" : {
             "$schema" : "http://json-schema.org/draft-03/schema",
             "id" : "project",
@@ -74,7 +133,7 @@
             "nativeType" : "project",
             "properties" : {
                 "id" : {
-                    "type" : "string",
+                    "type" : "integer",
                     "required" : true,
                     "nativeName" : "id",
                     "nativeType" : "string",
@@ -104,14 +163,23 @@
                     "nativeName" : "public",
                     "nativeType" : "boolean"
                 },
-                "links" : {
-                    "type" : "object",
+                "repositories" : {
+                    "type" : "array",
                     "items" : {
                         "type" : "object",
                         "nativeType" : "object"
                     },
-                    "nativeType" : "object",
-                    "nativeName" : "links"
+                    "nativeType" : "string",
+                    "nativeName" : "repositories"
+                },
+                "permissions" : {
+                    "type" : "array",
+                    "items" : {
+                        "type" : "object",
+                        "nativeType" : "object"
+                    },
+                    "nativeType" : "string",
+                    "nativeName" : "permissions"
                 },
                 "type" : {
                     "type" : "string",
@@ -126,8 +194,14 @@
             "type" : "object",
             "nativeType" : "repo",
             "properties" : {
-                "id" : {
+                "uid" : {
                     "type" : "string",
+                    "required" : true,
+                    "nativeName" : "__UID__",
+                    "nativeType" : "string"
+                },
+                "id" : {
+                    "type" : "integer",
                     "required" : true,
                     "nativeName" : "id",
                     "nativeType" : "string",
@@ -138,7 +212,7 @@
                 "name" : {
                     "type" : "string",
                     "required" : true,
-                    "nativeName" : "__UID__",
+                    "nativeName" : "__NAME__",
                     "nativeType" : "string"
                 },
                 "description" : {
@@ -148,7 +222,7 @@
                 },
                 "slug" : {
                     "type" : "string",
-                    "nativeName" : "__NAME__",
+                    "nativeName" : "slug",
                     "nativeType" : "string"
                 },
                 "scmId" : {
@@ -176,7 +250,37 @@
                     "nativeName" : "public",
                     "nativeType" : "boolean"
                 },
+                "permissions" : {
+                    "type" : "array",
+                    "items" : {
+                        "type" : "object",
+                        "nativeType" : "object"
+                    },
+                    "nativeType" : "string",
+                    "nativeName" : "permissions"
+                },
+                "commits" : {
+                    "required" : false,
+                    "type" : "array",
+                    "items" : {
+                        "type" : "object",
+                        "nativeType" : "object"
+                    },
+                    "nativeType" : "string",
+                    "nativeName" : "commits"
+                },
+                "branches" : {
+                    "required" : false,
+                    "type" : "array",
+                    "items" : {
+                        "type" : "object",
+                        "nativeType" : "object"
+                    },
+                    "nativeType" : "string",
+                    "nativeName" : "branches"
+                },
                 "links" : {
+                    "required" : false,
                     "type" : "object",
                     "items" : {
                         "type" : "object",

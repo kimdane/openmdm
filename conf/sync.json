@@ -127,6 +127,13 @@
                     "target" : "description"
                 },
                 {
+                    "source" : "managedBy",
+                    "transform" : {
+                        "type" : "groovy",
+                        "source" : "r = openidm.query('managed/user/',['_queryFilter':'dn eq \"' + source + '\"']).result; usr = (r.size() > 0) ? ['_ref':'managed/user' + r[0]] : null; usr",
+                    "target" : "managedBy"
+                },
+                {
                     "source" : "member",
                     "target" : "member"
                 },
@@ -313,6 +320,16 @@
                     "source" : "type"
                 },
                 {
+                    "target" : "projectCommits",
+                    "condition" : "/object/commits pr",
+                    "source" : "commits"
+                },
+                {
+                    "target" : "projectRepos",
+                    "condition" : "/object/repositories pr",
+                    "source" : "repositories"
+                },
+                {
                     "target" : "permissions",
                     "condition" : "/object/permissions pr",
                     "source" : "permissions"
@@ -405,6 +422,10 @@
                 "file" : "script/sync/scmStructure.js"
             },
             "properties" : [
+                {
+                    "target" : "_id",
+                    "source" : "uid"
+                },
                 {
                     "target" : "id",
                     "source" : "id"
@@ -530,6 +551,79 @@
                     "file" : "ui/correlateTreeToQueryFilter.js"
                 }
             ]
+        },
+        {
+            "target" : "managed/user",
+            "source" : "system/bitbucket/user",
+            "name" : "systemBitbucketUser_managedUser",
+            "properties" : [
+                {
+                    "target" : "scmId",
+                    "source" : "id"
+                },
+                {
+                    "target" : "userName",
+                    "source" : "slug"
+                }
+            ],
+            "policies" : [
+                {
+                    "action" : "EXCEPTION",
+                    "situation" : "AMBIGUOUS"
+                },
+                {
+                    "action" : "EXCEPTION",
+                    "situation" : "SOURCE_MISSING"
+                },
+                {
+                    "action" : "EXCEPTION",
+                    "situation" : "MISSING"
+                },
+                {
+                    "action" : "EXCEPTION",
+                    "situation" : "FOUND_ALREADY_LINKED"
+                },
+                {
+                    "action" : "DELETE",
+                    "situation" : "UNQUALIFIED"
+                },
+                {
+                    "action" : "EXCEPTION",
+                    "situation" : "UNASSIGNED"
+                },
+                {
+                    "action" : "EXCEPTION",
+                    "situation" : "LINK_ONLY"
+                },
+                {
+                    "action" : "IGNORE",
+                    "situation" : "TARGET_IGNORED"
+                },
+                {
+                    "action" : "IGNORE",
+                    "situation" : "SOURCE_IGNORED"
+                },
+                {
+                    "action" : "IGNORE",
+                    "situation" : "ALL_GONE"
+                },
+                {
+                    "action" : "UPDATE",
+                    "situation" : "CONFIRMED"
+                },
+                {
+                    "action" : "UPDATE",
+                    "situation" : "FOUND"
+                },
+                {
+                    "action" : "IGNORE",
+                    "situation" : "ABSENT"
+                }
+            ],
+            "correlationQuery" : {
+               "type" : "text/javascript",
+               "source" : "var query = { '_queryFilter' : 'userName eq \"' + source.slug + '\"' }; query;"
+            }
         }
     ]
 }

@@ -1,0 +1,19 @@
+version: "2"
+services:
+ postgres:
+  image: postgres:9.5
+  environment:
+   - POSTGRES_PASSWORD=openidm
+   - POSTGRES_USER=openidm
+#Persistence  - PGDATA=/usr/local/postgresql/data/pgdata #Persistence
+  volumes:
+   - $PWD/postgres:/docker-entrypoint-initdb.d
+#Persistence  - $PWD/persistence/pgdata:/usr/local/postgresql/data #Persistence
+ adpmdm:
+  image: adpmdm
+  depends_on: 
+   - postgres
+  links:
+   - postgres:postgres
+  ports: 
+   - 8080:8080/tcp

@@ -61,19 +61,24 @@ def identityServer = IdentityServer.getInstance()
 def apiVersion = identityServer.getProperty("RESTcon.apiVersion", "1.0");
 def restApi = "/rest/api/${apiVersion}"
 
-log.warn("Entering RESTcon " + operation + " Script")
+log.info("Entering RESTcon " + operation + " Script")
 
 def totalPagedResults = -1, remainingPagedResults = -1
 def pagedResultsCookie = options.getPagedResultsCookie()
 def pagedResultsOffset = options.getPagedResultsOffset()
 def pageSize = options.getPageSize()
+def attributesToGet = options.attributesToGet
 
-log.warn("Options RESTcon pagedResultsCookie " + pagedResultsCookie + " Script")
-log.warn("Options RESTcon pagedResultsOffset " + pagedResultsOffset + " Script")
-log.warn("Options RESTcon pageSize " + pageSize + " Script")
+log.info("Options RESTcon pagedResultsCookie " + pagedResultsCookie + " Script")
+log.info("Options RESTcon pagedResultsOffset " + pagedResultsOffset + " Script")
+log.info("Options RESTcon pageSize " + pageSize + " Script")
+log.info("Options RESTcon attributesToGet " + attributesToGet + " Script")
 
 def query = [:]
 def queryFilter = ''
+if (attributesToGet != null) {
+    def one = 1
+}   
 
 if (filter != null) {
     queryFilter = filter.accept(CRESTFilterVisitor.VISITOR, [
@@ -98,84 +103,23 @@ if (null != pagedResultsOffset) {
     query['start'] = pagedResultsOffset
 }
 
-
-def getOneById = { objectType, objectId ->
-	def searchResult = connection.request(GET) { req ->
-        if (objectType == 'projects') {
-    	    uri.path = "${restApi}/${objectType}/${objectId}"
+def getProjectRepos = { key ->
+    def results = []
+    if (!key) {
+        return results
+    }
+    connection.request(GET) { req ->
+        uri.path = "${restApi}/projects/${key}/repos"
+        uri.query = query
+        response.success = { resp, json ->
+            results = json.values
         }
-        else {
-            uri.path = "${restApi}/${objectType}"
-            query['project'] = 'unknown'
-            query['slug'] = 'unknown'
-        }
-	    uri.query = query
-	
-	    log.warn("RESTcon getOneById objectId " + objectId + "  URI " + uri + " Script")
-	    response.success = { resp, json ->
-	            resultHandler {
-                    if (objectType == 'projects') { 
-                        uid json.key 
-	                    id json.id.toString()
-                    }
-                    else { 
-                        uid json.id.toString()
-	                    id json.name
-                    }
-	                
-	            	json.each() { key, value -> attribute key, value }
-	            }
-	        json
-	    }
-	}
-    return new SearchResult("0", 0);
-}
-
-def getManyById = { objectType, matches ->
-	def map = ['result':[]]
-	matches.each() { match ->
-		objectId = match[1] 
-	    log.warn("RESTcon getManyById objectId " + objectId + " Script")
-		connection.request(GET) { req ->
-            if (objectType == "projects") {
-	        	uri.path = "${restApi}/${objectType}/${objectId}"
-            }
-            else { 
-                project = 'unknown'
-                slug = 'unknown'
-		        connection.request(GET) { subReq ->
-	        	    uri.path = "http://localhost:8080/openidm/managed/scmRepo/"+objectId
-		            response.success = { subResp, repo ->
-    	        	    project = repo.project.key
-                        slug = repo.slug
-            	    }
-                    response.failure = { subResp, repo ->
-                        log.warn("RESTcon getManyById  failure ${objectId} " + repo + " Script")
-                    }
-                }
-                uri.path = "${restApi}/projects/${project}/repos/${slug}"
-    	    }
-            uri.query = query
-		    response.success = { resp, json ->
-    	        	map['result'] += json 
-    	    }
-        } 
-	}
-    map.result.each() { record ->
-        resultHandler {
-            if (objectType == 'projects') { 
-                uid record.key 
-	            id record.id.toString()
-            }
-            else { 
-                uid record.id.toString()
-	            id record.name
-            }
-            record.each() { key, value -> attribute key, value }
+        response.failure = { resp, json ->
+            log.warn("RESTcon getProjectRepos failure ${key} " + json + " Script")
         }
     }
-    map
-    return new SearchResult("0", 0);
+	log.info("RESTcon getProjectRepos key " + key + "  repos " + results.size() + " Script")
+    return results
 }
 
 def getBranches = { key, slug ->
@@ -187,7 +131,7 @@ def getBranches = { key, slug ->
         uri.path = "${restApi}/projects/${key}/repos/${slug}/branches"
         uri.query = query
         response.success = { resp, json ->
-            results += json.values
+            results = json.values
         }
         response.failure = { resp, json ->
             log.warn("RESTcon getBranches failure ${key} ${slug} " + json + " Script")
@@ -206,7 +150,7 @@ def getCommits = { key, slug ->
         uri.path = "${restApi}/projects/${key}/repos/${slug}/commits"
         uri.query = query
         response.success = { resp, json ->
-            results += json.values
+            results = json.values
         }
         response.failure = { resp, json ->
             log.warn("RESTcon getCommits failure ${key} ${slug} " + json + " Script")
@@ -220,18 +164,12 @@ def getPermissions = { key, slug ->
     if (!key) {
         return results
     }
-    def path = ""
-    if (!slug) {
-        path = "${restApi}/projects/${key}/permissions"
-    }
-    else {
-        path = "${restApi}/projects/${key}/repos/${slug}/permissions"
-    }
+    def path = slug ? "${restApi}/projects/${key}/permissions" : "${restApi}/projects/${key}/repos/${slug}/permissions"
     connection.request(GET) { req ->
         uri.path = "${path}/users"
         uri.query = query
         response.success = { resp, json ->
-            results += json.values
+            results = json.values
         }
         response.failure = { resp, json ->
             log.warn("RESTcon getPermissions failure ${key} ${slug} " + json + " Script")
@@ -250,13 +188,114 @@ def getPermissions = { key, slug ->
     return results
 }
 
+def checkForExtendedAttributes = { objectType, record ->
+    if (objectType == 'repos' && record.containsKey('project') && record.slug.startsWith('a')) {
+        if (attributesToGet.contains('branches')) {
+            record['branches'] = getBranches(record.get('project',[:]).get('key','NONE'), record.slug)
+        }
+        if (attributesToGet.contains('commits')) {
+            record['commits'] = getCommits(record.get('project',[:]).get('key','NONE'), record.slug)
+        }
+        if (attributesToGet.contains('NOTpermissions')) {
+            record['permissions'] = getPermissions(record.get('project',[:]).get('key','NONE'), record.slug)
+        }
+    }
+    else if (objectType == 'projects' && record.containsKey('key')) {
+        if (attributesToGet.contains('NOTrepositories')) {
+            record['repositories'] = getProjectRepos(record.key)
+        }
+        if (attributesToGet.contains('NOTpermissions')) {
+            record['permissions'] = getPermissions(record.key, false)
+        }
+    }
+    return record
+}
+
+
+def getOneById = { objectType, objectId ->
+	def searchResult = connection.request(GET) { req ->
+        if (objectType == 'projects' || objectType == "users") {
+    	    uri.path = "${restApi}/${objectType}/${objectId}"
+        }
+        else {
+            parts = objectId.split("_in_project_")
+            project = parts[1]
+            slug = parts[0]
+            uri.path = "${restApi}/projects/${project}/repos/${slug}"
+        }
+	    uri.query = query
+	
+	    log.info("RESTcon getOneById objectId " + objectId + "  URI " + uri + " Script")
+	    response.success = { resp, record ->
+            attributesToGet = ['repositories']
+            record = checkForExtendedAttributes(objectType, record) 
+	        resultHandler {
+                if (objectType == 'projects') { 
+                    uid record.key 
+                }
+                else if (objectType == 'users') { 
+                    uid record.slug 
+                }
+                else { 
+	                uid "${record.slug}_in_project_${record.get('project',[:]).get('key','NONE')}"
+                }
+                id record.name
+	            
+	        	record.each() { key, value -> attribute key, value }
+	        }
+	        record
+	    }
+	}
+    return new SearchResult("0", 0);
+}
+
+def getManyById = { objectType, matches ->
+	def map = ['result':[]]
+	matches.each() { match ->
+		objectId = match[1] 
+	    log.info("RESTcon getManyById objectId " + objectId + " Script")
+		connection.request(GET) { req ->
+            if (objectType == "projects" || objectType == "users") {
+	        	uri.path = "${restApi}/${objectType}/${objectId}"
+            }
+            else { 
+                parts = objectId.split("_in_project_")
+                project = parts[1]
+                slug = parts[0]
+                uri.path = "${restApi}/projects/${project}/repos/${slug}"
+    	    }
+            uri.query = query
+		    response.success = { resp, json ->
+    	        	map['result'] += json 
+    	    }
+        } 
+	}
+    map.result.each() { record ->
+        resultHandler {
+            if (objectType == 'projects') { 
+                uid record.key 
+            }
+            else if (objectType == 'users') { 
+                uid record.slug 
+            }
+            else { 
+	            uid "${record.slug}_in_project_${record.get('project',[:]).get('key','NONE')}"
+            }
+            id record.name
+            record.each() { key, value -> attribute key, value }
+        }
+    }
+    map
+    return new SearchResult("0", 0);
+}
+
 def getSearchResults = { objectType ->
 	def map = ['result':[]]
     def isLastPage = false
-    def max = 2000
-    query['limit'] = 500
+    def max = 4000000
+    query['limit'] = 1000
 	while (!isLastPage && query['start'] < max) {
-	    log.warn("RESTcon getSearchResults nextPageStart " + query['start'] + " Script")
+	    log.info("RESTcon getSearchResults nextPageStart " + query['start'] + " Script")
 		connection.request(GET) { req ->
             path = "${restApi}/${objectType}"
 	    	uri.path = path
@@ -276,24 +315,17 @@ def getSearchResults = { objectType ->
     	}
 	}
     map.result.each() { record ->
-        if (objectType == 'repos' && record.containsKey('project') && record.slug.startsWith('a')) {
-            record['branches'] = getBranches(record.project.key, record.slug)
-            record['commits'] = getCommits(record.project.key, record.slug)
-            //record['permissions'] = getPermissions(record.project.key, record.slug)
-        }
-        //else {
-        //    record['permissions'] = getPermissions(record.key, false)
-        //}
-                    
         resultHandler {
             if (objectType == 'projects') { 
                 uid record.key 
-	            id record.id.toString()
+            }
+            else if (objectType == 'users') { 
+                uid record.slug 
             }
             else { 
-                uid record.id.toString()
-	            id record.name
+	            uid "${record.slug}_in_project_${record.get('project',[:]).get('key','NONE')}"
             }
+            id record.name
             record.each() { key, value -> attribute key, value }
         }
     }
@@ -306,18 +338,20 @@ def getSearchResultsWithLimit = { objectType ->
 	    uri.path = "${restApi}/${objectType}"
 	    uri.query = query
 	
-	    log.warn("RESTcon getSearchResultsWithLimit URI path:" + uri.path + " query:"+ uri.query +" Script")
+	    log.info("RESTcon getSearchResultsWithLimit URI path:" + uri.path + " query:"+ uri.query +" Script")
 	    response.success = { resp, json ->
 	        json.values.each() { record ->
 	            resultHandler {
                     if (objectType == 'projects') { 
                         uid record.key 
-	                    id record.id.toString()
+                    }
+                    else if (objectType == 'users') { 
+                        uid record.slug 
                     }
                     else { 
-                        uid record.id.toString()
-	                    id record.name
+	                    uid "${record.slug}_in_project_${record.get('project',[:]).get('key','NONE')}"
                     }
+                    id record.name
 	                
 	            	record.each() { key, value -> attribute key, value }
 	            }
@@ -325,25 +359,28 @@ def getSearchResultsWithLimit = { objectType ->
 	        json
 	    }
 	}
-    //return new SearchResult(nextPageStart.toString(), nextPageStart);
-	//log.warn("RESTcon JSON searchResult " + searchResult + " Script")
     if(searchResult.isLastPage) {
         return new SearchResult("0", 0)
     } else {
         return new SearchResult("-1", searchResult.nextPageStart)
     }
-    //return new SearchResult(nextPageStart.toString(), SearchResult.CountPolicy.NONE, query['limit'], nextPageStart);
 }
 
 
 def doSearch = { objectType, idPattern ->
     one = queryFilter =~ "^id eq \"${idPattern}\"\$"
     many = queryFilter =~ "id eq \"${idPattern}\""
-    log.warn("RESTcon queryFilter "+ queryFilter)
+    log.info("RESTcon queryFilter "+ queryFilter)
+    if (attributesToGet.size() == 1) {
+        return getSearchResults(objectType)
+    }
     if (one) {
+        log.info("RESTcon getOneById "+ objectType + " " + one[0][1])
+        attributesToGet = []
         return getOneById(objectType, one[0][1])
     }
     else if (many && objectType != "repos") {
+        log.info("RESTcon getManyById "+ objectType + " " + many)
         return getManyById(objectType, many)
     }
     else if (pageSize) {
@@ -357,12 +394,15 @@ def doSearch = { objectType, idPattern ->
 
 switch (objectClass) {
     case 'ObjectClass: project':
-		doSearch('projects', '([A-Z]+)')
+		doSearch('projects', '([A-Z][A-Z0-9]+)')
 		break;
     case 'ObjectClass: repo':
-		doSearch('repos', '([0-9]+)')
+		doSearch('repos', '([^ ]+)')
+		break;
+    case 'ObjectClass: user':
+		doSearch('users', '([a-zA-Z]+)')
 		break;
 	default:
-		log.warn("SEARCH Script got bad objectClass '${objectClass}'")
+		log.warn("SEARCH Script got bad objectClass " + objectClass)
 		break;
 }
